@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.finly.data.local.AppDatabase;
 import com.finly.data.local.BudgetDao;
 import com.finly.data.local.SavingsGoalDao;
+import com.finly.data.local.SecurityPreferences;
 import com.finly.data.local.TransactionDao;
 import com.finly.data.repository.BudgetRepository;
 import com.finly.data.repository.SavingsGoalRepository;
@@ -22,6 +23,7 @@ import com.finly.parser.ParserFactory;
 import com.finly.service.TransactionNotificationService;
 import com.finly.service.TransactionNotificationService_MembersInjector;
 import com.finly.ui.MainActivity;
+import com.finly.ui.MainActivity_MembersInjector;
 import com.finly.ui.viewmodel.AddTransactionViewModel;
 import com.finly.ui.viewmodel.AddTransactionViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.finly.ui.viewmodel.BudgetViewModel;
@@ -36,6 +38,7 @@ import com.finly.ui.viewmodel.SettingsViewModel;
 import com.finly.ui.viewmodel.SettingsViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.finly.ui.viewmodel.StatisticsViewModel;
 import com.finly.ui.viewmodel.StatisticsViewModel_HiltModules_KeyModule_ProvideFactory;
+import com.finly.util.AppLockManager;
 import com.finly.widget.FinlyWidgetProvider;
 import com.finly.widget.FinlyWidgetProvider_MembersInjector;
 import dagger.hilt.android.ActivityRetainedLifecycle;
@@ -386,6 +389,7 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
 
     @Override
     public void injectMainActivity(MainActivity mainActivity) {
+      injectMainActivity2(mainActivity);
     }
 
     @Override
@@ -411,6 +415,12 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
     @Override
     public ViewComponentBuilder viewComponentBuilder() {
       return new ViewCBuilder(singletonCImpl, activityRetainedCImpl, activityCImpl);
+    }
+
+    private MainActivity injectMainActivity2(MainActivity instance) {
+      MainActivity_MembersInjector.injectAppLockManager(instance, singletonCImpl.appLockManagerProvider.get());
+      MainActivity_MembersInjector.injectSecurityPreferences(instance, singletonCImpl.securityPreferencesProvider.get());
+      return instance;
     }
   }
 
@@ -506,7 +516,7 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
           return (T) new SavingsGoalViewModel(singletonCImpl.savingsGoalRepositoryProvider.get());
 
           case 5: // com.finly.ui.viewmodel.SettingsViewModel 
-          return (T) new SettingsViewModel(singletonCImpl.transactionRepositoryProvider.get(), ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
+          return (T) new SettingsViewModel(singletonCImpl.transactionRepositoryProvider.get(), singletonCImpl.securityPreferencesProvider.get(), singletonCImpl.appLockManagerProvider.get(), ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
           case 6: // com.finly.ui.viewmodel.StatisticsViewModel 
           return (T) new StatisticsViewModel(singletonCImpl.transactionRepositoryProvider.get());
@@ -610,6 +620,10 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
 
     private Provider<TransactionRepository> transactionRepositoryProvider;
 
+    private Provider<SecurityPreferences> securityPreferencesProvider;
+
+    private Provider<AppLockManager> appLockManagerProvider;
+
     private Provider<BudgetDao> provideBudgetDaoProvider;
 
     private Provider<BudgetRepository> budgetRepositoryProvider;
@@ -631,11 +645,13 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
       this.provideAppDatabaseProvider = DoubleCheck.provider(new SwitchingProvider<AppDatabase>(singletonCImpl, 2));
       this.provideTransactionDaoProvider = DoubleCheck.provider(new SwitchingProvider<TransactionDao>(singletonCImpl, 1));
       this.transactionRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<TransactionRepository>(singletonCImpl, 0));
-      this.provideBudgetDaoProvider = DoubleCheck.provider(new SwitchingProvider<BudgetDao>(singletonCImpl, 4));
-      this.budgetRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<BudgetRepository>(singletonCImpl, 3));
-      this.provideSavingsGoalDaoProvider = DoubleCheck.provider(new SwitchingProvider<SavingsGoalDao>(singletonCImpl, 6));
-      this.savingsGoalRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<SavingsGoalRepository>(singletonCImpl, 5));
-      this.provideParserFactoryProvider = DoubleCheck.provider(new SwitchingProvider<ParserFactory>(singletonCImpl, 7));
+      this.securityPreferencesProvider = DoubleCheck.provider(new SwitchingProvider<SecurityPreferences>(singletonCImpl, 4));
+      this.appLockManagerProvider = DoubleCheck.provider(new SwitchingProvider<AppLockManager>(singletonCImpl, 3));
+      this.provideBudgetDaoProvider = DoubleCheck.provider(new SwitchingProvider<BudgetDao>(singletonCImpl, 6));
+      this.budgetRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<BudgetRepository>(singletonCImpl, 5));
+      this.provideSavingsGoalDaoProvider = DoubleCheck.provider(new SwitchingProvider<SavingsGoalDao>(singletonCImpl, 8));
+      this.savingsGoalRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<SavingsGoalRepository>(singletonCImpl, 7));
+      this.provideParserFactoryProvider = DoubleCheck.provider(new SwitchingProvider<ParserFactory>(singletonCImpl, 9));
     }
 
     @Override
@@ -690,19 +706,25 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
           case 2: // com.finly.data.local.AppDatabase 
           return (T) DatabaseModule_ProvideAppDatabaseFactory.provideAppDatabase(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 3: // com.finly.data.repository.BudgetRepository 
+          case 3: // com.finly.util.AppLockManager 
+          return (T) new AppLockManager(singletonCImpl.securityPreferencesProvider.get());
+
+          case 4: // com.finly.data.local.SecurityPreferences 
+          return (T) new SecurityPreferences(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
+
+          case 5: // com.finly.data.repository.BudgetRepository 
           return (T) new BudgetRepository(singletonCImpl.provideBudgetDaoProvider.get());
 
-          case 4: // com.finly.data.local.BudgetDao 
+          case 6: // com.finly.data.local.BudgetDao 
           return (T) DatabaseModule_ProvideBudgetDaoFactory.provideBudgetDao(singletonCImpl.provideAppDatabaseProvider.get());
 
-          case 5: // com.finly.data.repository.SavingsGoalRepository 
+          case 7: // com.finly.data.repository.SavingsGoalRepository 
           return (T) new SavingsGoalRepository(singletonCImpl.provideSavingsGoalDaoProvider.get());
 
-          case 6: // com.finly.data.local.SavingsGoalDao 
+          case 8: // com.finly.data.local.SavingsGoalDao 
           return (T) DatabaseModule_ProvideSavingsGoalDaoFactory.provideSavingsGoalDao(singletonCImpl.provideAppDatabaseProvider.get());
 
-          case 7: // com.finly.parser.ParserFactory 
+          case 9: // com.finly.parser.ParserFactory 
           return (T) ParserModule_ProvideParserFactoryFactory.provideParserFactory();
 
           default: throw new AssertionError(id);

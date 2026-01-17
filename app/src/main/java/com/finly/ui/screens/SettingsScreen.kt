@@ -137,6 +137,91 @@ fun SettingsScreen(
         }
     }
 
+    // PIN Creation Dialog
+    var showPinDialog by remember { mutableStateOf(false) }
+    var pinStep by remember { mutableIntStateOf(0) } // 0: Enter, 1: Confirm
+    var firstPin by remember { mutableStateOf("") }
+    var currentPinInput by remember { mutableStateOf("") }
+    
+    if (showPinDialog) {
+        AlertDialog(
+            onDismissRequest = { 
+                showPinDialog = false 
+                pinStep = 0
+                firstPin = ""
+                currentPinInput = ""
+                // If cancelled and lock not enabled, ensure toggle is off
+                if (!viewModel.isPinSet()) {
+                    viewModel.toggleAppLock(false)
+                }
+            },
+            title = { Text(if (pinStep == 0) "Tạo mã PIN mới" else "Xác nhận mã PIN") },
+            text = {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(if (pinStep == 0) "Nhập 4 số PIN của bạn" else "Nhập lại mã PIN để xác nhận")
+                    Spacer(modifier = Modifier.height(16.dp))
+                    OutlinedTextField(
+                        value = currentPinInput,
+                        onValueChange = { 
+                            if (it.length <= 4 && it.all { char -> char.isDigit() }) {
+                                currentPinInput = it
+                            }
+                        },
+                        singleLine = true,
+                        // VisualTransformation for PIN dots can be added here
+                        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                            keyboardType = androidx.compose.ui.text.input.KeyboardType.NumberPassword
+                        )
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (currentPinInput.length == 4) {
+                            if (pinStep == 0) {
+                                firstPin = currentPinInput
+                                currentPinInput = ""
+                                pinStep = 1
+                            } else {
+                                if (currentPinInput == firstPin) {
+                                    // Success
+                                    val hash = java.security.MessageDigest.getInstance("SHA-256")
+                                        .digest(currentPinInput.toByteArray())
+                                        .joinToString("") { "%02x".format(it) }
+                                    
+                                    viewModel.setPin(hash)
+                                    showPinDialog = false
+                                    pinStep = 0
+                                    firstPin = ""
+                                    currentPinInput = ""
+                                } else {
+                                    Toast.makeText(context, "Mã PIN không khớp", Toast.LENGTH_SHORT).show()
+                                    currentPinInput = ""
+                                }
+                            }
+                        }
+                    }
+                ) {
+                    Text(if (pinStep == 0) "Tiếp tục" else "Xác nhận")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { 
+                    showPinDialog = false
+                    pinStep = 0
+                    firstPin = ""
+                    currentPinInput = ""
+                    if (!viewModel.isPinSet()) {
+                        viewModel.toggleAppLock(false)
+                    }
+                }) {
+                    Text("Hủy")
+                }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -213,6 +298,35 @@ fun SettingsScreen(
                 )
             }
             
+            // Bảo mật Section
+            SettingsSection(title = "Bảo mật") {
+                SettingsToggleItem(
+                    icon = Icons.Default.Lock,
+                    title = "Khóa ứng dụng",
+                    subtitle = "Sử dụng PIN hoặc sinh trắc học",
+                    checked = uiState.isAppLockEnabled,
+                    onCheckedChange = { enabled ->
+                        if (enabled && !viewModel.isPinSet()) {
+                            showPinDialog = true
+                        } else {
+                            viewModel.toggleAppLock(enabled)
+                        }
+                    }
+                )
+                
+                if (uiState.isAppLockEnabled) {
+                    HorizontalDivider(modifier = Modifier.padding(start = 56.dp))
+                    
+                    SettingsToggleItem(
+                        icon = Icons.Default.Fingerprint,
+                        title = "Sử dụng sinh trắc học",
+                        subtitle = "Vân tay hoặc khuôn mặt",
+                        checked = uiState.isBiometricEnabled,
+                        onCheckedChange = { viewModel.toggleBiometric(it) }
+                    )
+                }
+            }
+
             // Dữ liệu Section
             SettingsSection(title = "Dữ liệu") {
                 SettingsInfoItem(

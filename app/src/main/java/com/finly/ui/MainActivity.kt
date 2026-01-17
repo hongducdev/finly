@@ -4,42 +4,58 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import androidx.activity.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.zIndex
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.finly.data.local.SecurityPreferences
 import com.finly.service.QuickAddNotificationService
 import com.finly.service.TransactionNotificationService
 import com.finly.ui.screens.AddTransactionScreen
 import com.finly.ui.screens.BudgetScreen
 import com.finly.ui.screens.CalendarScreen
 import com.finly.ui.screens.DashboardScreen
+import com.finly.ui.screens.LockScreen
 import com.finly.ui.screens.OnboardingScreen
 import com.finly.ui.screens.SavingsGoalScreen
 import com.finly.ui.screens.SettingsScreen
 import com.finly.ui.screens.StatisticsScreen
 import com.finly.ui.theme.FinlyTheme
+import com.finly.util.AppLockManager
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * MainActivity - Entry point của ứng dụng
  */
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
+
+    @Inject
+    lateinit var appLockManager: AppLockManager
+    
+    @Inject
+    lateinit var securityPreferences: SecurityPreferences
 
     // State để xử lý deep link từ notification
     private var pendingTransactionType: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Initialize Lock State
+        appLockManager.initOnStartup()
         
         // Xử lý intent từ notification
         handleIntent(intent)
@@ -50,11 +66,28 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FinlyApp(
-                        hasNotificationPermission = { isNotificationListenerEnabled() },
-                        pendingTransactionType = pendingTransactionType,
-                        onTransactionTypeHandled = { pendingTransactionType = null }
-                    )
+                    val isLocked by appLockManager.isLocked.collectAsStateWithLifecycle()
+                    
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        FinlyApp(
+                            hasNotificationPermission = { isNotificationListenerEnabled() },
+                            pendingTransactionType = pendingTransactionType,
+                            onTransactionTypeHandled = { pendingTransactionType = null }
+                        )
+                        
+                        if (isLocked) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .zIndex(999f) // Ensure it's on top
+                            ) {
+                                LockScreen(
+                                    appLockManager = appLockManager,
+                                    securityPreferences = securityPreferences
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -78,7 +111,21 @@ class MainActivity : ComponentActivity() {
     
     override fun onResume() {
         super.onResume()
-        // Trigger recomposition khi quay lại app
+        // Check lock when returning to foreground
+        appLockManager.checkAndLock()
+        // Update last active timestamp
+        appLockManager.updateLastActive()
+    }
+    
+    override fun onPause() {
+        super.onPause()
+        // Record background time
+        appLockManager.onAppBackgrounded()
+    }
+    
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        appLockManager.updateLastActive()
     }
     
     /**

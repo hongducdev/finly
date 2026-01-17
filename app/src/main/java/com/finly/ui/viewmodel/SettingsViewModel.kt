@@ -30,7 +30,9 @@ data class SettingsUiState(
     val exportSuccess: Boolean = false,
     val importSuccess: Boolean = false,
     val importedCount: Int = 0,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val isAppLockEnabled: Boolean = false,
+    val isBiometricEnabled: Boolean = false
 )
 
 /**
@@ -39,6 +41,8 @@ data class SettingsUiState(
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val transactionRepository: TransactionRepository,
+    private val securityPreferences: com.finly.data.local.SecurityPreferences,
+    private val appLockManager: com.finly.util.AppLockManager,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -50,6 +54,57 @@ class SettingsViewModel @Inject constructor(
     init {
         loadStats()
         checkQuickAddNotificationStatus()
+        loadSecuritySettings()
+    }
+    
+    private fun loadSecuritySettings() {
+        _uiState.update { 
+            it.copy(
+                isAppLockEnabled = securityPreferences.isAppLockEnabled(),
+                isBiometricEnabled = securityPreferences.isBiometricEnabled()
+            ) 
+        }
+    }
+    
+    /**
+     * Set mã PIN mới (nhận vào hash)
+     */
+    fun setPin(pinHash: String) {
+        securityPreferences.savePinHash(pinHash)
+        // Auto enable app lock if setting PIN for first time
+        if (!securityPreferences.isAppLockEnabled()) {
+            securityPreferences.setAppLockEnabled(true)
+            appLockManager.lockApp() // Lock immediately for security? Or just setup state
+            loadSecuritySettings()
+        }
+    }
+    
+    /**
+     * Toggle App Lock
+     */
+    fun toggleAppLock(enabled: Boolean) {
+        // Nếu bật, cần kiểm tra đã có PIN chưa -> UI sẽ handle việc show dialog set PIN
+        if (enabled && !securityPreferences.isPinSet()) {
+            // UI needs to show set PIN dialog
+        } else {
+            securityPreferences.setAppLockEnabled(enabled)
+            loadSecuritySettings()
+        }
+    }
+    
+    /**
+     * Toggle Biometric
+     */
+    fun toggleBiometric(enabled: Boolean) {
+         securityPreferences.setBiometricEnabled(enabled)
+         loadSecuritySettings()
+    }
+    
+    /**
+     * Check if PIN is set
+     */
+    fun isPinSet(): Boolean {
+        return securityPreferences.isPinSet()
     }
 
     /**

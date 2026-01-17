@@ -1,7 +1,9 @@
 package com.finly.ui.viewmodel;
 
 import android.content.Context;
+import com.finly.data.local.SecurityPreferences;
 import com.finly.data.repository.TransactionRepository;
+import com.finly.util.AppLockManager;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
 import dagger.internal.QualifierMetadata;
@@ -25,27 +27,35 @@ import javax.inject.Provider;
 public final class SettingsViewModel_Factory implements Factory<SettingsViewModel> {
   private final Provider<TransactionRepository> transactionRepositoryProvider;
 
+  private final Provider<SecurityPreferences> securityPreferencesProvider;
+
+  private final Provider<AppLockManager> appLockManagerProvider;
+
   private final Provider<Context> contextProvider;
 
   public SettingsViewModel_Factory(Provider<TransactionRepository> transactionRepositoryProvider,
-      Provider<Context> contextProvider) {
+      Provider<SecurityPreferences> securityPreferencesProvider,
+      Provider<AppLockManager> appLockManagerProvider, Provider<Context> contextProvider) {
     this.transactionRepositoryProvider = transactionRepositoryProvider;
+    this.securityPreferencesProvider = securityPreferencesProvider;
+    this.appLockManagerProvider = appLockManagerProvider;
     this.contextProvider = contextProvider;
   }
 
   @Override
   public SettingsViewModel get() {
-    return newInstance(transactionRepositoryProvider.get(), contextProvider.get());
+    return newInstance(transactionRepositoryProvider.get(), securityPreferencesProvider.get(), appLockManagerProvider.get(), contextProvider.get());
   }
 
   public static SettingsViewModel_Factory create(
       Provider<TransactionRepository> transactionRepositoryProvider,
-      Provider<Context> contextProvider) {
-    return new SettingsViewModel_Factory(transactionRepositoryProvider, contextProvider);
+      Provider<SecurityPreferences> securityPreferencesProvider,
+      Provider<AppLockManager> appLockManagerProvider, Provider<Context> contextProvider) {
+    return new SettingsViewModel_Factory(transactionRepositoryProvider, securityPreferencesProvider, appLockManagerProvider, contextProvider);
   }
 
   public static SettingsViewModel newInstance(TransactionRepository transactionRepository,
-      Context context) {
-    return new SettingsViewModel(transactionRepository, context);
+      SecurityPreferences securityPreferences, AppLockManager appLockManager, Context context) {
+    return new SettingsViewModel(transactionRepository, securityPreferences, appLockManager, context);
   }
 }
