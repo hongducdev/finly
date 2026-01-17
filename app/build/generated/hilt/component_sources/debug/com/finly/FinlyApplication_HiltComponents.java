@@ -11,6 +11,7 @@ import com.finly.ui.viewmodel.DashboardViewModel_HiltModules;
 import com.finly.ui.viewmodel.SavingsGoalViewModel_HiltModules;
 import com.finly.ui.viewmodel.SettingsViewModel_HiltModules;
 import com.finly.ui.viewmodel.StatisticsViewModel_HiltModules;
+import com.finly.widget.FinlyWidgetProvider_GeneratedInjector;
 import dagger.Binds;
 import dagger.Component;
 import dagger.Module;
@@ -145,6 +146,7 @@ public final class FinlyApplication_HiltComponents {
   )
   @Singleton
   public abstract static class SingletonC implements FinlyApplication_GeneratedInjector,
+      FinlyWidgetProvider_GeneratedInjector,
       FragmentGetContextFix.FragmentGetContextFixEntryPoint,
       HiltWrapper_ActivityRetainedComponentManager_ActivityRetainedComponentBuilderEntryPoint,
       ServiceComponentManager.ServiceComponentBuilderEntryPoint,

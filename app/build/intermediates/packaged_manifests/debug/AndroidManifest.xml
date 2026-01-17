@@ -66,6 +66,20 @@
                 android:value="Quick add transaction shortcuts" />
         </service>
 
+        <!-- Home Screen Widget -->
+        <receiver
+            android:name="com.finly.widget.FinlyWidgetProvider"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.finly.ACTION_REFRESH_WIDGET" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+
         <activity
             android:name="androidx.compose.ui.tooling.PreviewActivity"
             android:exported="true" />

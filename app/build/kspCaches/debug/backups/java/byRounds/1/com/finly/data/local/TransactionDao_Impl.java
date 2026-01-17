@@ -500,6 +500,85 @@ public final class TransactionDao_Impl implements TransactionDao {
   }
 
   @Override
+  public Object getTransactionsBetweenSync(final long startTime, final long endTime,
+      final Continuation<? super List<Transaction>> $completion) {
+    final String _sql = "SELECT * FROM transactions WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp DESC";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, startTime);
+    _argIndex = 2;
+    _statement.bindLong(_argIndex, endTime);
+    final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
+    return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<List<Transaction>>() {
+      @Override
+      @NonNull
+      public List<Transaction> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfSource = CursorUtil.getColumnIndexOrThrow(_cursor, "source");
+          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+          final int _cursorIndexOfAmount = CursorUtil.getColumnIndexOrThrow(_cursor, "amount");
+          final int _cursorIndexOfBalance = CursorUtil.getColumnIndexOrThrow(_cursor, "balance");
+          final int _cursorIndexOfTimestamp = CursorUtil.getColumnIndexOrThrow(_cursor, "timestamp");
+          final int _cursorIndexOfRawText = CursorUtil.getColumnIndexOrThrow(_cursor, "rawText");
+          final int _cursorIndexOfRawTextHash = CursorUtil.getColumnIndexOrThrow(_cursor, "rawTextHash");
+          final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+          final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+          final List<Transaction> _result = new ArrayList<Transaction>(_cursor.getCount());
+          while (_cursor.moveToNext()) {
+            final Transaction _item;
+            final long _tmpId;
+            _tmpId = _cursor.getLong(_cursorIndexOfId);
+            final TransactionSource _tmpSource;
+            final String _tmp;
+            _tmp = _cursor.getString(_cursorIndexOfSource);
+            _tmpSource = __converters.toTransactionSource(_tmp);
+            final TransactionType _tmpType;
+            final String _tmp_1;
+            _tmp_1 = _cursor.getString(_cursorIndexOfType);
+            _tmpType = __converters.toTransactionType(_tmp_1);
+            final long _tmpAmount;
+            _tmpAmount = _cursor.getLong(_cursorIndexOfAmount);
+            final Long _tmpBalance;
+            if (_cursor.isNull(_cursorIndexOfBalance)) {
+              _tmpBalance = null;
+            } else {
+              _tmpBalance = _cursor.getLong(_cursorIndexOfBalance);
+            }
+            final long _tmpTimestamp;
+            _tmpTimestamp = _cursor.getLong(_cursorIndexOfTimestamp);
+            final String _tmpRawText;
+            _tmpRawText = _cursor.getString(_cursorIndexOfRawText);
+            final String _tmpRawTextHash;
+            _tmpRawTextHash = _cursor.getString(_cursorIndexOfRawTextHash);
+            final String _tmpDescription;
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
+            final TransactionCategory _tmpCategory;
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfCategory)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfCategory);
+            }
+            _tmpCategory = __converters.toTransactionCategory(_tmp_2);
+            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+          _statement.release();
+        }
+      }
+    }, $completion);
+  }
+
+  @Override
   public Flow<List<Transaction>> getTransactionsBySource(final TransactionSource source) {
     final String _sql = "SELECT * FROM transactions WHERE source = ? ORDER BY timestamp DESC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);

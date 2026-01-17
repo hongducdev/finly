@@ -53,6 +53,12 @@ interface TransactionDao {
      */
     @Query("SELECT * FROM transactions WHERE timestamp BETWEEN :startTime AND :endTime ORDER BY timestamp DESC")
     fun getTransactionsBetween(startTime: Long, endTime: Long): Flow<List<Transaction>>
+
+    /**
+     * Lấy giao dịch trong khoảng thời gian (Sync)
+     */
+    @Query("SELECT * FROM transactions WHERE timestamp BETWEEN :startTime AND :endTime ORDER BY timestamp DESC")
+    suspend fun getTransactionsBetweenSync(startTime: Long, endTime: Long): List<Transaction>
     
     /**
      * Lấy giao dịch theo nguồn

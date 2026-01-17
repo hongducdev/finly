@@ -54,6 +54,12 @@ class TransactionRepository @Inject constructor(
      */
     fun getTransactionsBetween(startTime: Long, endTime: Long): Flow<List<Transaction>> =
         transactionDao.getTransactionsBetween(startTime, endTime)
+
+    /**
+     * Lấy giao dịch trong khoảng thời gian (Sync)
+     */
+    suspend fun getTransactionsBetweenSync(startTime: Long, endTime: Long): List<Transaction> =
+        transactionDao.getTransactionsBetweenSync(startTime, endTime)
     
     // ==================== Thống kê ====================
     

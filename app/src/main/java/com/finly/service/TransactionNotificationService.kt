@@ -116,6 +116,7 @@ class TransactionNotificationService : NotificationListenerService() {
                 val id = transactionRepository.insertTransaction(transaction)
                 if (id > 0) {
                     Log.d(TAG, "Transaction saved: ${parsedTransaction.type} ${parsedTransaction.amount} VND from ${parser.source}")
+                    com.finly.widget.FinlyWidgetProvider.sendRefreshBroadcast(this@TransactionNotificationService)
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error saving transaction", e)

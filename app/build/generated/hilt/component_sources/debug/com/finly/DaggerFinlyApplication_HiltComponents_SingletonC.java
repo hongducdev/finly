@@ -36,6 +36,8 @@ import com.finly.ui.viewmodel.SettingsViewModel;
 import com.finly.ui.viewmodel.SettingsViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.finly.ui.viewmodel.StatisticsViewModel;
 import com.finly.ui.viewmodel.StatisticsViewModel_HiltModules_KeyModule_ProvideFactory;
+import com.finly.widget.FinlyWidgetProvider;
+import com.finly.widget.FinlyWidgetProvider_MembersInjector;
 import dagger.hilt.android.ActivityRetainedLifecycle;
 import dagger.hilt.android.ViewModelLifecycle;
 import dagger.hilt.android.internal.builders.ActivityComponentBuilder;
@@ -489,7 +491,7 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
       public T get() {
         switch (id) {
           case 0: // com.finly.ui.viewmodel.AddTransactionViewModel 
-          return (T) new AddTransactionViewModel(singletonCImpl.transactionRepositoryProvider.get(), viewModelCImpl.savedStateHandle);
+          return (T) new AddTransactionViewModel(singletonCImpl.transactionRepositoryProvider.get(), viewModelCImpl.savedStateHandle, ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
           case 1: // com.finly.ui.viewmodel.BudgetViewModel 
           return (T) new BudgetViewModel(singletonCImpl.budgetRepositoryProvider.get(), singletonCImpl.transactionRepositoryProvider.get());
@@ -641,6 +643,11 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
     }
 
     @Override
+    public void injectFinlyWidgetProvider(FinlyWidgetProvider finlyWidgetProvider) {
+      injectFinlyWidgetProvider2(finlyWidgetProvider);
+    }
+
+    @Override
     public Set<Boolean> getDisableFragmentGetContextFix() {
       return Collections.<Boolean>emptySet();
     }
@@ -653,6 +660,11 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
     @Override
     public ServiceComponentBuilder serviceComponentBuilder() {
       return new ServiceCBuilder(singletonCImpl);
+    }
+
+    private FinlyWidgetProvider injectFinlyWidgetProvider2(FinlyWidgetProvider instance) {
+      FinlyWidgetProvider_MembersInjector.injectTransactionRepository(instance, transactionRepositoryProvider.get());
+      return instance;
     }
 
     private static final class SwitchingProvider<T> implements Provider<T> {

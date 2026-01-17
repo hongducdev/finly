@@ -10,7 +10,15 @@ color secondary
 color surface
 color text_primary
 color text_secondary
+drawable bg_widget_rounded
 drawable ic_launcher_foreground
+id btn_add_expense
+id btn_add_income
+id btn_refresh
+id iv_app_logo
+id tv_month_expense
+id tv_today_expense
+layout widget_finly
 mipmap ic_launcher
 mipmap ic_launcher_round
 string about
@@ -49,3 +57,4 @@ string yesterday
 style Theme.Finly
 xml backup_rules
 xml data_extraction_rules
+xml widget_info

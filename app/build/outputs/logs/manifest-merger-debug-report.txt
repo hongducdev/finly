@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:2:1-56:12
-INJECTED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:2:1-56:12
-INJECTED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:2:1-56:12
-INJECTED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:2:1-56:12
+ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:2:1-70:12
+INJECTED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:2:1-70:12
+INJECTED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:2:1-70:12
+INJECTED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:2:1-70:12
 MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\hongducdev\.gradle\caches\transforms-3\041e195e9709784d636023bb26300f20\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\hongducdev\.gradle\caches\transforms-3\cc6cce032c5b687dd23ae33499ffbb6d\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\hongducdev\.gradle\caches\transforms-3\72df78d9cec570718e731e5edba41801\transformed\navigation-common-2.7.7\AndroidManifest.xml:17:1-22:12
@@ -94,8 +94,8 @@ ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:8:5-89
 	android:name
 		ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:8:22-86
 application
-ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:10:5-54:19
-INJECTED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:10:5-54:19
+ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:10:5-68:19
+INJECTED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:10:5-68:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.6.8] C:\Users\hongducdev\.gradle\caches\transforms-3\ee627d9cbde9f54b267b7645cda90b44\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.6.8] C:\Users\hongducdev\.gradle\caches\transforms-3\ee627d9cbde9f54b267b7645cda90b44\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.compose.ui:ui-test-manifest:1.6.8] C:\Users\hongducdev\.gradle\caches\transforms-3\ebde88186d316ad10d9961c6fcb8f272\transformed\ui-test-manifest-1.6.8\AndroidManifest.xml:22:5-26:19
@@ -188,6 +188,28 @@ ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:49:13-51:67
 		ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:51:17-64
 	android:name
 		ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:50:17-76
+receiver#com.finly.widget.FinlyWidgetProvider
+ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:55:9-66:20
+	android:exported
+		ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:57:13-36
+	android:name
+		ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:56:13-55
+intent-filter#action:name:android.appwidget.action.APPWIDGET_UPDATE+action:name:com.finly.ACTION_REFRESH_WIDGET
+ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:58:13-61:29
+action#android.appwidget.action.APPWIDGET_UPDATE
+ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:59:17-84
+	android:name
+		ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:59:25-81
+action#com.finly.ACTION_REFRESH_WIDGET
+ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:60:17-74
+	android:name
+		ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:60:25-71
+meta-data#android.appwidget.provider
+ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:63:13-65:55
+	android:resource
+		ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:65:17-52
+	android:name
+		ADDED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml:64:17-58
 uses-sdk
 INJECTED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\MyProjects\finly\app\src\main\AndroidManifest.xml

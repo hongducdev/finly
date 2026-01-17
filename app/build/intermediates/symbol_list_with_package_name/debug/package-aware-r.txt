@@ -85,6 +85,7 @@ dimen notification_small_icon_size_as_large
 dimen notification_subtext_size
 dimen notification_top_pad
 dimen notification_top_pad_large_text
+drawable bg_widget_rounded
 drawable ic_call_answer
 drawable ic_call_answer_low
 drawable ic_call_answer_video
@@ -146,6 +147,9 @@ id actions
 id androidx_compose_ui_view_composition_context
 id async
 id blocking
+id btn_add_expense
+id btn_add_income
+id btn_refresh
 id chronometer
 id compose_view_saveable_id_tag
 id consume_window_insets_tag
@@ -161,6 +165,7 @@ id info
 id inspection_slot_table_set
 id is_pooling_container_tag
 id italic
+id iv_app_logo
 id line1
 id line3
 id nav_controller_view_tag
@@ -190,6 +195,8 @@ id text
 id text2
 id time
 id title
+id tv_month_expense
+id tv_today_expense
 id view_tree_lifecycle_owner
 id view_tree_on_back_pressed_dispatcher_owner
 id view_tree_saved_state_registry_owner
@@ -206,6 +213,7 @@ layout notification_template_custom_big
 layout notification_template_icon_group
 layout notification_template_part_chronometer
 layout notification_template_part_time
+layout widget_finly
 mipmap ic_launcher
 mipmap ic_launcher_round
 string about
@@ -354,3 +362,4 @@ styleable NavInclude graph
 styleable Navigator android_label android_id route
 xml backup_rules
 xml data_extraction_rules
+xml widget_info

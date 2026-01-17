@@ -40,7 +40,8 @@ data class AddTransactionUiState(
 @HiltViewModel
 class AddTransactionViewModel @Inject constructor(
     private val transactionRepository: TransactionRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AddTransactionUiState())
@@ -179,6 +180,9 @@ class AddTransactionViewModel @Inject constructor(
                 
                 transactionRepository.insertTransaction(transaction)
                 _uiState.update { it.copy(isLoading = false, isSaved = true) }
+                
+                // Update widget
+                com.finly.widget.FinlyWidgetProvider.sendRefreshBroadcast(context)
             } catch (e: Exception) {
                 _uiState.update { 
                     it.copy(
