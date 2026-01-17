@@ -27,6 +27,14 @@ interface TransactionDao {
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(transactions: List<Transaction>): List<Long>
+
+    // ==================== UPDATE ====================
+
+    /**
+     * Cập nhật giao dịch
+     */
+    @Update
+    suspend fun update(transaction: Transaction)
     
     // ==================== QUERY ====================
     

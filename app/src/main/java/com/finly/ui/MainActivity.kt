@@ -140,6 +140,10 @@ fun FinlyApp(
                 onNavigateToAddTransaction = { timestamp ->
                     navController.navigate("add_transaction/$timestamp")
                 },
+                onNavigateToEditTransaction = { transactionId ->
+                    val timestamp = System.currentTimeMillis()
+                    navController.navigate("add_transaction/$timestamp?transactionId=$transactionId")
+                },
                 onNavigateToSettings = {
                     navController.navigate("settings")
                 },
@@ -162,7 +166,7 @@ fun FinlyApp(
         }
         
         composable(
-            route = "add_transaction/{timestamp}?type={type}",
+            route = "add_transaction/{timestamp}?type={type}&transactionId={transactionId}",
             arguments = listOf(
                 navArgument("timestamp") { 
                     type = NavType.LongType
@@ -172,6 +176,10 @@ fun FinlyApp(
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
+                },
+                navArgument("transactionId") {
+                    type = NavType.LongType
+                    defaultValue = 0L
                 }
             )
         ) {

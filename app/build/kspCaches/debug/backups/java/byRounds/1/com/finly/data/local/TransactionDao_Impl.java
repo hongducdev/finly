@@ -5,6 +5,7 @@ import android.os.CancellationSignal;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.CoroutinesRoom;
+import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
@@ -42,6 +43,8 @@ public final class TransactionDao_Impl implements TransactionDao {
   private final EntityInsertionAdapter<Transaction> __insertionAdapterOfTransaction;
 
   private final Converters __converters = new Converters();
+
+  private final EntityDeletionOrUpdateAdapter<Transaction> __updateAdapterOfTransaction;
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteById;
 
@@ -84,6 +87,44 @@ public final class TransactionDao_Impl implements TransactionDao {
         } else {
           statement.bindString(10, _tmp_2);
         }
+      }
+    };
+    this.__updateAdapterOfTransaction = new EntityDeletionOrUpdateAdapter<Transaction>(__db) {
+      @Override
+      @NonNull
+      protected String createQuery() {
+        return "UPDATE OR ABORT `transactions` SET `id` = ?,`source` = ?,`type` = ?,`amount` = ?,`balance` = ?,`timestamp` = ?,`rawText` = ?,`rawTextHash` = ?,`description` = ?,`category` = ? WHERE `id` = ?";
+      }
+
+      @Override
+      protected void bind(@NonNull final SupportSQLiteStatement statement,
+          @NonNull final Transaction entity) {
+        statement.bindLong(1, entity.getId());
+        final String _tmp = __converters.fromTransactionSource(entity.getSource());
+        statement.bindString(2, _tmp);
+        final String _tmp_1 = __converters.fromTransactionType(entity.getType());
+        statement.bindString(3, _tmp_1);
+        statement.bindLong(4, entity.getAmount());
+        if (entity.getBalance() == null) {
+          statement.bindNull(5);
+        } else {
+          statement.bindLong(5, entity.getBalance());
+        }
+        statement.bindLong(6, entity.getTimestamp());
+        statement.bindString(7, entity.getRawText());
+        statement.bindString(8, entity.getRawTextHash());
+        if (entity.getDescription() == null) {
+          statement.bindNull(9);
+        } else {
+          statement.bindString(9, entity.getDescription());
+        }
+        final String _tmp_2 = __converters.fromTransactionCategory(entity.getCategory());
+        if (_tmp_2 == null) {
+          statement.bindNull(10);
+        } else {
+          statement.bindString(10, _tmp_2);
+        }
+        statement.bindLong(11, entity.getId());
       }
     };
     this.__preparedStmtOfDeleteById = new SharedSQLiteStatement(__db) {
@@ -135,6 +176,25 @@ public final class TransactionDao_Impl implements TransactionDao {
           final List<Long> _result = __insertionAdapterOfTransaction.insertAndReturnIdsList(transactions);
           __db.setTransactionSuccessful();
           return _result;
+        } finally {
+          __db.endTransaction();
+        }
+      }
+    }, $completion);
+  }
+
+  @Override
+  public Object update(final Transaction transaction,
+      final Continuation<? super Unit> $completion) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      @NonNull
+      public Unit call() throws Exception {
+        __db.beginTransaction();
+        try {
+          __updateAdapterOfTransaction.handle(transaction);
+          __db.setTransactionSuccessful();
+          return Unit.INSTANCE;
         } finally {
           __db.endTransaction();
         }

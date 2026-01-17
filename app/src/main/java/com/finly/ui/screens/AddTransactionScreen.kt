@@ -58,7 +58,12 @@ fun AddTransactionScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Thêm giao dịch", fontWeight = FontWeight.Bold) },
+                title = { 
+                    Text(
+                        if (uiState.isEditMode) "Chỉnh sửa giao dịch" else "Thêm giao dịch", 
+                        fontWeight = FontWeight.Bold
+                    ) 
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
@@ -170,7 +175,7 @@ fun AddTransactionScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Lưu giao dịch",
+                        text = if (uiState.isEditMode) "Cập nhật giao dịch" else "Lưu giao dịch",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )

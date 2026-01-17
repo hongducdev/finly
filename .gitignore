@@ -92,3 +92,14 @@ ehthumbs.db
 
 # Secrets
 secrets.properties
+
+# Profiling
+*.hprof
+
+# Temporary files
+*.swp
+*~
+*.orig
+
+# Scans
+.scan/

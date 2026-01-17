@@ -103,6 +103,13 @@ class TransactionRepository @Inject constructor(
     suspend fun insertTransaction(transaction: Transaction): Long {
         return transactionDao.insert(transaction)
     }
+
+    /**
+     * Cập nhật giao dịch
+     */
+    suspend fun updateTransaction(transaction: Transaction) {
+        transactionDao.update(transaction)
+    }
     
     /**
      * Kiểm tra giao dịch đã tồn tại chưa

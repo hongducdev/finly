@@ -103,9 +103,18 @@ class CalendarViewModel @Inject constructor(
                 val monthlyIncome = transactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
                 val monthlyExpense = transactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
                 
-                _uiState.update {
-                    it.copy(
+                _uiState.update { currentState ->
+                    // Nếu đang chọn ngày nào đó, cập nhật lại danh sách giao dịch của ngày đó
+                    val updatedSelectedTransactions = if (currentState.selectedDate != null) {
+                        val selectedDay = currentState.selectedDate.get(Calendar.DAY_OF_MONTH)
+                        daySummaries[selectedDay]?.transactions ?: emptyList()
+                    } else {
+                        currentState.selectedDayTransactions
+                    }
+
+                    currentState.copy(
                         daySummaries = daySummaries,
+                        selectedDayTransactions = updatedSelectedTransactions,
                         monthlyIncome = monthlyIncome,
                         monthlyExpense = monthlyExpense,
                         isLoading = false

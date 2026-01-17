@@ -31,8 +31,11 @@ data class AddTransactionUiState(
     val selectedTimestamp: Long = System.currentTimeMillis(),
     val isLoading: Boolean = false,
     val isSaved: Boolean = false,
-    val errorMessage: String? = null
-)
+    val errorMessage: String? = null,
+    val transactionId: Long? = null
+) {
+    val isEditMode: Boolean get() = transactionId != null
+}
 
 /**
  * ViewModel cho màn hình thêm giao dịch thủ công
@@ -54,14 +57,39 @@ class AddTransactionViewModel @Inject constructor(
             _uiState.update { it.copy(selectedTimestamp = timestampArg) }
         }
         
-        // Lấy type từ navigation argument (từ quick add notification)
-        val typeArg = savedStateHandle.get<String>("type")
-        if (typeArg != null) {
-            val transactionType = when (typeArg) {
-                "INCOME" -> TransactionType.INCOME
-                else -> TransactionType.EXPENSE
+        // Lấy transactionId để edit
+        val transactionIdArg = savedStateHandle.get<Long>("transactionId")
+        if (transactionIdArg != null && transactionIdArg > 0) {
+            loadTransaction(transactionIdArg)
+        } else {
+            // Lấy type từ navigation argument (chỉ khi tạo mới)
+            val typeArg = savedStateHandle.get<String>("type")
+            if (typeArg != null) {
+                val transactionType = when (typeArg) {
+                    "INCOME" -> TransactionType.INCOME
+                    else -> TransactionType.EXPENSE
+                }
+                _uiState.update { it.copy(type = transactionType) }
             }
-            _uiState.update { it.copy(type = transactionType) }
+        }
+    }
+
+    private fun loadTransaction(id: Long) {
+        viewModelScope.launch {
+            val transaction = transactionRepository.getTransactionById(id)
+            if (transaction != null) {
+                _uiState.update { 
+                    it.copy(
+                        transactionId = transaction.id,
+                        amount = (transaction.amount / 1000).toString(), // Chuyển về đơn vị nghìn
+                        type = transaction.type,
+                        source = transaction.source,
+                        category = transaction.category,
+                        description = transaction.description ?: "",
+                        selectedTimestamp = transaction.timestamp
+                    ) 
+                }
+            }
         }
     }
 
@@ -167,6 +195,7 @@ class AddTransactionViewModel @Inject constructor(
                 val hash = generateHash(rawText)
                 
                 val transaction = Transaction(
+                    id = currentState.transactionId ?: 0, // 0 means insert, otherwise update
                     source = currentState.source,
                     type = currentState.type,
                     amount = amountValue,
@@ -178,7 +207,11 @@ class AddTransactionViewModel @Inject constructor(
                     category = currentState.category
                 )
                 
-                transactionRepository.insertTransaction(transaction)
+                if (currentState.isEditMode) {
+                    transactionRepository.updateTransaction(transaction)
+                } else {
+                    transactionRepository.insertTransaction(transaction)
+                }
                 _uiState.update { it.copy(isLoading = false, isSaved = true) }
                 
                 // Update widget

@@ -42,6 +42,7 @@ import java.util.*
 fun CalendarScreen(
     viewModel: CalendarViewModel = hiltViewModel(),
     onNavigateToAddTransaction: (Long) -> Unit,
+    onNavigateToEditTransaction: (Long) -> Unit,
     onNavigateToSettings: () -> Unit = {},
     onNavigateToStatistics: () -> Unit = {}
 ) {
@@ -122,7 +123,10 @@ fun CalendarScreen(
                 }
                 
                 items(uiState.selectedDayTransactions) { transaction ->
-                    TransactionItem(transaction = transaction)
+                    TransactionItem(
+                        transaction = transaction,
+                        onClick = { onNavigateToEditTransaction(transaction.id) }
+                    )
                 }
             } else if (uiState.selectedDate != null) {
                 item {
@@ -395,13 +399,18 @@ private fun DayCell(
  * Item giao dịch
  */
 @Composable
-private fun TransactionItem(transaction: Transaction) {
+private fun TransactionItem(
+    transaction: Transaction,
+    onClick: () -> Unit
+) {
     val formatter = NumberFormat.getInstance(Locale("vi", "VN"))
     val timeFormat = SimpleDateFormat("HH:mm", Locale("vi", "VN"))
     val isExpense = transaction.type == TransactionType.EXPENSE
     
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
         )

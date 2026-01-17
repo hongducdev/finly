@@ -1,38 +1,34 @@
 [
     {
-        "merged": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-merged_res-61:\\drawable_bg_widget_rounded.xml.flat",
-        "source": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-main-63:\\drawable\\bg_widget_rounded.xml"
+        "merged": "com.finly.app-merged_res-61:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.finly.app-main-63:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-merged_res-61:\\drawable_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-main-63:\\drawable\\ic_launcher_foreground.xml"
+        "merged": "com.finly.app-merged_res-61:/xml_widget_info.xml.flat",
+        "source": "com.finly.app-main-63:/xml/widget_info.xml"
     },
     {
-        "merged": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-merged_res-61:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-main-63:\\mipmap-anydpi-v26\\ic_launcher.xml"
+        "merged": "com.finly.app-merged_res-61:/drawable_bg_widget_rounded.xml.flat",
+        "source": "com.finly.app-main-63:/drawable/bg_widget_rounded.xml"
+    },
+    {
+        "merged": "com.finly.app-merged_res-61:/xml_backup_rules.xml.flat",
+        "source": "com.finly.app-main-63:/xml/backup_rules.xml"
     },
     {
         "merged": "com.finly.app-merged_res-61:/layout_widget_finly.xml.flat",
         "source": "com.finly.app-main-63:/layout/widget_finly.xml"
     },
     {
-        "merged": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-merged_res-61:\\xml_data_extraction_rules.xml.flat",
-        "source": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-main-63:\\xml\\data_extraction_rules.xml"
+        "merged": "com.finly.app-merged_res-61:/xml_data_extraction_rules.xml.flat",
+        "source": "com.finly.app-main-63:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-merged_res-61:\\xml_backup_rules.xml.flat",
-        "source": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-main-63:\\xml\\backup_rules.xml"
+        "merged": "com.finly.app-merged_res-61:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.finly.app-main-63:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-merged_res-61:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-main-63:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
-    },
-    {
-        "merged": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-merged_res-61:\\xml_widget_info.xml.flat",
-        "source": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-main-63:\\xml\\widget_info.xml"
-    },
-    {
-        "merged": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-merged_res-61:\\layout_widget_finly.xml.flat",
-        "source": "C:\\Users\\hongducdev\\.gradle\\daemon\\8.4\\com.finly.app-main-63:\\layout\\widget_finly.xml"
+        "merged": "com.finly.app-merged_res-61:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.finly.app-main-63:/mipmap-anydpi-v26/ic_launcher_round.xml"
     }
 ]
