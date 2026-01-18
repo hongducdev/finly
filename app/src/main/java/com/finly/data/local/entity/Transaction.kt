@@ -76,5 +76,8 @@ data class Transaction(
     val description: String? = null,
     
     /** Danh mục giao dịch (chỉ dùng cho giao dịch thủ công) */
-    val category: TransactionCategory? = null
+    val category: TransactionCategory? = null,
+    
+    /** ID danh mục tùy chỉnh (nếu người dùng tạo danh mục riêng) */
+    val customCategoryId: Long? = null
 )

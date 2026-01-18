@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.finly.data.local.AppDatabase
 import com.finly.data.local.BudgetDao
+import com.finly.data.local.CustomCategoryDao
 import com.finly.data.local.SavingsGoalDao
 import com.finly.data.local.TransactionDao
 import dagger.Module
@@ -51,5 +52,11 @@ object DatabaseModule {
     @Singleton
     fun provideSavingsGoalDao(database: AppDatabase): SavingsGoalDao {
         return database.savingsGoalDao()
+    }
+    
+    @Provides
+    @Singleton
+    fun provideCustomCategoryDao(database: AppDatabase): CustomCategoryDao {
+        return database.customCategoryDao()
     }
 }

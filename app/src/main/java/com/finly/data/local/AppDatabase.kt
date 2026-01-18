@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import com.finly.data.local.entity.Budget
 import com.finly.data.local.entity.SavingsGoal
 import com.finly.data.local.entity.Transaction
+import com.finly.data.local.entity.CustomCategory
 
 /**
  * Room Database cho Finly
@@ -15,10 +16,11 @@ import com.finly.data.local.entity.Transaction
     entities = [
         Transaction::class,
         Budget::class,
-        SavingsGoal::class
+        SavingsGoal::class,
+        CustomCategory::class
     ],
-    version = 3,
-    exportSchema = true
+    version = 4,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -26,6 +28,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
     abstract fun budgetDao(): BudgetDao
     abstract fun savingsGoalDao(): SavingsGoalDao
+    abstract fun customCategoryDao(): CustomCategoryDao
     
     companion object {
         const val DATABASE_NAME = "finly_database"

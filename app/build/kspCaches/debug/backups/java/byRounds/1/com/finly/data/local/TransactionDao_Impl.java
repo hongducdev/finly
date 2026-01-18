@@ -56,7 +56,7 @@ public final class TransactionDao_Impl implements TransactionDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR IGNORE INTO `transactions` (`id`,`source`,`type`,`amount`,`balance`,`timestamp`,`rawText`,`rawTextHash`,`description`,`category`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR IGNORE INTO `transactions` (`id`,`source`,`type`,`amount`,`balance`,`timestamp`,`rawText`,`rawTextHash`,`description`,`category`,`customCategoryId`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -86,6 +86,11 @@ public final class TransactionDao_Impl implements TransactionDao {
           statement.bindNull(10);
         } else {
           statement.bindString(10, _tmp_2);
+        }
+        if (entity.getCustomCategoryId() == null) {
+          statement.bindNull(11);
+        } else {
+          statement.bindLong(11, entity.getCustomCategoryId());
         }
       }
     };
@@ -93,7 +98,7 @@ public final class TransactionDao_Impl implements TransactionDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "UPDATE OR ABORT `transactions` SET `id` = ?,`source` = ?,`type` = ?,`amount` = ?,`balance` = ?,`timestamp` = ?,`rawText` = ?,`rawTextHash` = ?,`description` = ?,`category` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `transactions` SET `id` = ?,`source` = ?,`type` = ?,`amount` = ?,`balance` = ?,`timestamp` = ?,`rawText` = ?,`rawTextHash` = ?,`description` = ?,`category` = ?,`customCategoryId` = ? WHERE `id` = ?";
       }
 
       @Override
@@ -124,7 +129,12 @@ public final class TransactionDao_Impl implements TransactionDao {
         } else {
           statement.bindString(10, _tmp_2);
         }
-        statement.bindLong(11, entity.getId());
+        if (entity.getCustomCategoryId() == null) {
+          statement.bindNull(11);
+        } else {
+          statement.bindLong(11, entity.getCustomCategoryId());
+        }
+        statement.bindLong(12, entity.getId());
       }
     };
     this.__preparedStmtOfDeleteById = new SharedSQLiteStatement(__db) {
@@ -270,6 +280,7 @@ public final class TransactionDao_Impl implements TransactionDao {
           final int _cursorIndexOfRawTextHash = CursorUtil.getColumnIndexOrThrow(_cursor, "rawTextHash");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
           final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+          final int _cursorIndexOfCustomCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "customCategoryId");
           final List<Transaction> _result = new ArrayList<Transaction>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Transaction _item;
@@ -311,7 +322,13 @@ public final class TransactionDao_Impl implements TransactionDao {
               _tmp_2 = _cursor.getString(_cursorIndexOfCategory);
             }
             _tmpCategory = __converters.toTransactionCategory(_tmp_2);
-            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory);
+            final Long _tmpCustomCategoryId;
+            if (_cursor.isNull(_cursorIndexOfCustomCategoryId)) {
+              _tmpCustomCategoryId = null;
+            } else {
+              _tmpCustomCategoryId = _cursor.getLong(_cursorIndexOfCustomCategoryId);
+            }
+            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory,_tmpCustomCategoryId);
             _result.add(_item);
           }
           return _result;
@@ -348,6 +365,7 @@ public final class TransactionDao_Impl implements TransactionDao {
           final int _cursorIndexOfRawTextHash = CursorUtil.getColumnIndexOrThrow(_cursor, "rawTextHash");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
           final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+          final int _cursorIndexOfCustomCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "customCategoryId");
           final List<Transaction> _result = new ArrayList<Transaction>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Transaction _item;
@@ -389,7 +407,13 @@ public final class TransactionDao_Impl implements TransactionDao {
               _tmp_2 = _cursor.getString(_cursorIndexOfCategory);
             }
             _tmpCategory = __converters.toTransactionCategory(_tmp_2);
-            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory);
+            final Long _tmpCustomCategoryId;
+            if (_cursor.isNull(_cursorIndexOfCustomCategoryId)) {
+              _tmpCustomCategoryId = null;
+            } else {
+              _tmpCustomCategoryId = _cursor.getLong(_cursorIndexOfCustomCategoryId);
+            }
+            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory,_tmpCustomCategoryId);
             _result.add(_item);
           }
           return _result;
@@ -425,6 +449,7 @@ public final class TransactionDao_Impl implements TransactionDao {
           final int _cursorIndexOfRawTextHash = CursorUtil.getColumnIndexOrThrow(_cursor, "rawTextHash");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
           final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+          final int _cursorIndexOfCustomCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "customCategoryId");
           final Transaction _result;
           if (_cursor.moveToFirst()) {
             final long _tmpId;
@@ -465,7 +490,13 @@ public final class TransactionDao_Impl implements TransactionDao {
               _tmp_2 = _cursor.getString(_cursorIndexOfCategory);
             }
             _tmpCategory = __converters.toTransactionCategory(_tmp_2);
-            _result = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory);
+            final Long _tmpCustomCategoryId;
+            if (_cursor.isNull(_cursorIndexOfCustomCategoryId)) {
+              _tmpCustomCategoryId = null;
+            } else {
+              _tmpCustomCategoryId = _cursor.getLong(_cursorIndexOfCustomCategoryId);
+            }
+            _result = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory,_tmpCustomCategoryId);
           } else {
             _result = null;
           }
@@ -502,6 +533,7 @@ public final class TransactionDao_Impl implements TransactionDao {
           final int _cursorIndexOfRawTextHash = CursorUtil.getColumnIndexOrThrow(_cursor, "rawTextHash");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
           final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+          final int _cursorIndexOfCustomCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "customCategoryId");
           final List<Transaction> _result = new ArrayList<Transaction>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Transaction _item;
@@ -543,7 +575,13 @@ public final class TransactionDao_Impl implements TransactionDao {
               _tmp_2 = _cursor.getString(_cursorIndexOfCategory);
             }
             _tmpCategory = __converters.toTransactionCategory(_tmp_2);
-            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory);
+            final Long _tmpCustomCategoryId;
+            if (_cursor.isNull(_cursorIndexOfCustomCategoryId)) {
+              _tmpCustomCategoryId = null;
+            } else {
+              _tmpCustomCategoryId = _cursor.getLong(_cursorIndexOfCustomCategoryId);
+            }
+            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory,_tmpCustomCategoryId);
             _result.add(_item);
           }
           return _result;
@@ -585,6 +623,7 @@ public final class TransactionDao_Impl implements TransactionDao {
           final int _cursorIndexOfRawTextHash = CursorUtil.getColumnIndexOrThrow(_cursor, "rawTextHash");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
           final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+          final int _cursorIndexOfCustomCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "customCategoryId");
           final List<Transaction> _result = new ArrayList<Transaction>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Transaction _item;
@@ -626,7 +665,13 @@ public final class TransactionDao_Impl implements TransactionDao {
               _tmp_2 = _cursor.getString(_cursorIndexOfCategory);
             }
             _tmpCategory = __converters.toTransactionCategory(_tmp_2);
-            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory);
+            final Long _tmpCustomCategoryId;
+            if (_cursor.isNull(_cursorIndexOfCustomCategoryId)) {
+              _tmpCustomCategoryId = null;
+            } else {
+              _tmpCustomCategoryId = _cursor.getLong(_cursorIndexOfCustomCategoryId);
+            }
+            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory,_tmpCustomCategoryId);
             _result.add(_item);
           }
           return _result;
@@ -661,6 +706,7 @@ public final class TransactionDao_Impl implements TransactionDao {
           final int _cursorIndexOfRawTextHash = CursorUtil.getColumnIndexOrThrow(_cursor, "rawTextHash");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
           final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+          final int _cursorIndexOfCustomCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "customCategoryId");
           final List<Transaction> _result = new ArrayList<Transaction>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Transaction _item;
@@ -702,7 +748,13 @@ public final class TransactionDao_Impl implements TransactionDao {
               _tmp_3 = _cursor.getString(_cursorIndexOfCategory);
             }
             _tmpCategory = __converters.toTransactionCategory(_tmp_3);
-            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory);
+            final Long _tmpCustomCategoryId;
+            if (_cursor.isNull(_cursorIndexOfCustomCategoryId)) {
+              _tmpCustomCategoryId = null;
+            } else {
+              _tmpCustomCategoryId = _cursor.getLong(_cursorIndexOfCustomCategoryId);
+            }
+            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory,_tmpCustomCategoryId);
             _result.add(_item);
           }
           return _result;
@@ -740,6 +792,7 @@ public final class TransactionDao_Impl implements TransactionDao {
           final int _cursorIndexOfRawTextHash = CursorUtil.getColumnIndexOrThrow(_cursor, "rawTextHash");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
           final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+          final int _cursorIndexOfCustomCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "customCategoryId");
           final List<Transaction> _result = new ArrayList<Transaction>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Transaction _item;
@@ -781,7 +834,13 @@ public final class TransactionDao_Impl implements TransactionDao {
               _tmp_2 = _cursor.getString(_cursorIndexOfCategory);
             }
             _tmpCategory = __converters.toTransactionCategory(_tmp_2);
-            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory);
+            final Long _tmpCustomCategoryId;
+            if (_cursor.isNull(_cursorIndexOfCustomCategoryId)) {
+              _tmpCustomCategoryId = null;
+            } else {
+              _tmpCustomCategoryId = _cursor.getLong(_cursorIndexOfCustomCategoryId);
+            }
+            _item = new Transaction(_tmpId,_tmpSource,_tmpType,_tmpAmount,_tmpBalance,_tmpTimestamp,_tmpRawText,_tmpRawTextHash,_tmpDescription,_tmpCategory,_tmpCustomCategoryId);
             _result.add(_item);
           }
           return _result;

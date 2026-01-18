@@ -8,14 +8,17 @@ import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 import com.finly.data.local.AppDatabase;
 import com.finly.data.local.BudgetDao;
+import com.finly.data.local.CustomCategoryDao;
 import com.finly.data.local.SavingsGoalDao;
 import com.finly.data.local.SecurityPreferences;
 import com.finly.data.local.TransactionDao;
 import com.finly.data.repository.BudgetRepository;
+import com.finly.data.repository.CustomCategoryRepository;
 import com.finly.data.repository.SavingsGoalRepository;
 import com.finly.data.repository.TransactionRepository;
 import com.finly.di.DatabaseModule_ProvideAppDatabaseFactory;
 import com.finly.di.DatabaseModule_ProvideBudgetDaoFactory;
+import com.finly.di.DatabaseModule_ProvideCustomCategoryDaoFactory;
 import com.finly.di.DatabaseModule_ProvideSavingsGoalDaoFactory;
 import com.finly.di.DatabaseModule_ProvideTransactionDaoFactory;
 import com.finly.di.ParserModule_ProvideParserFactoryFactory;
@@ -26,10 +29,16 @@ import com.finly.ui.MainActivity;
 import com.finly.ui.MainActivity_MembersInjector;
 import com.finly.ui.viewmodel.AddTransactionViewModel;
 import com.finly.ui.viewmodel.AddTransactionViewModel_HiltModules_KeyModule_ProvideFactory;
+import com.finly.ui.viewmodel.AmountDescriptionViewModel;
+import com.finly.ui.viewmodel.AmountDescriptionViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.finly.ui.viewmodel.BudgetViewModel;
 import com.finly.ui.viewmodel.BudgetViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.finly.ui.viewmodel.CalendarViewModel;
 import com.finly.ui.viewmodel.CalendarViewModel_HiltModules_KeyModule_ProvideFactory;
+import com.finly.ui.viewmodel.CategorySelectionViewModel;
+import com.finly.ui.viewmodel.CategorySelectionViewModel_HiltModules_KeyModule_ProvideFactory;
+import com.finly.ui.viewmodel.CustomCategoryCreatorViewModel;
+import com.finly.ui.viewmodel.CustomCategoryCreatorViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.finly.ui.viewmodel.DashboardViewModel;
 import com.finly.ui.viewmodel.DashboardViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.finly.ui.viewmodel.SavingsGoalViewModel;
@@ -399,7 +408,7 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
 
     @Override
     public Set<String> getViewModelKeys() {
-      return SetBuilder.<String>newSetBuilder(7).add(AddTransactionViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(BudgetViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(CalendarViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(DashboardViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(SavingsGoalViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(SettingsViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(StatisticsViewModel_HiltModules_KeyModule_ProvideFactory.provide()).build();
+      return SetBuilder.<String>newSetBuilder(10).add(AddTransactionViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(AmountDescriptionViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(BudgetViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(CalendarViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(CategorySelectionViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(CustomCategoryCreatorViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(DashboardViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(SavingsGoalViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(SettingsViewModel_HiltModules_KeyModule_ProvideFactory.provide()).add(StatisticsViewModel_HiltModules_KeyModule_ProvideFactory.provide()).build();
     }
 
     @Override
@@ -435,9 +444,15 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
 
     private Provider<AddTransactionViewModel> addTransactionViewModelProvider;
 
+    private Provider<AmountDescriptionViewModel> amountDescriptionViewModelProvider;
+
     private Provider<BudgetViewModel> budgetViewModelProvider;
 
     private Provider<CalendarViewModel> calendarViewModelProvider;
+
+    private Provider<CategorySelectionViewModel> categorySelectionViewModelProvider;
+
+    private Provider<CustomCategoryCreatorViewModel> customCategoryCreatorViewModelProvider;
 
     private Provider<DashboardViewModel> dashboardViewModelProvider;
 
@@ -461,17 +476,20 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
     private void initialize(final SavedStateHandle savedStateHandleParam,
         final ViewModelLifecycle viewModelLifecycleParam) {
       this.addTransactionViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 0);
-      this.budgetViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 1);
-      this.calendarViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
-      this.dashboardViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 3);
-      this.savingsGoalViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 4);
-      this.settingsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 5);
-      this.statisticsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 6);
+      this.amountDescriptionViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 1);
+      this.budgetViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
+      this.calendarViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 3);
+      this.categorySelectionViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 4);
+      this.customCategoryCreatorViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 5);
+      this.dashboardViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 6);
+      this.savingsGoalViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 7);
+      this.settingsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 8);
+      this.statisticsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 9);
     }
 
     @Override
     public Map<String, javax.inject.Provider<ViewModel>> getHiltViewModelMap() {
-      return MapBuilder.<String, javax.inject.Provider<ViewModel>>newMapBuilder(7).put("com.finly.ui.viewmodel.AddTransactionViewModel", ((Provider) addTransactionViewModelProvider)).put("com.finly.ui.viewmodel.BudgetViewModel", ((Provider) budgetViewModelProvider)).put("com.finly.ui.viewmodel.CalendarViewModel", ((Provider) calendarViewModelProvider)).put("com.finly.ui.viewmodel.DashboardViewModel", ((Provider) dashboardViewModelProvider)).put("com.finly.ui.viewmodel.SavingsGoalViewModel", ((Provider) savingsGoalViewModelProvider)).put("com.finly.ui.viewmodel.SettingsViewModel", ((Provider) settingsViewModelProvider)).put("com.finly.ui.viewmodel.StatisticsViewModel", ((Provider) statisticsViewModelProvider)).build();
+      return MapBuilder.<String, javax.inject.Provider<ViewModel>>newMapBuilder(10).put("com.finly.ui.viewmodel.AddTransactionViewModel", ((Provider) addTransactionViewModelProvider)).put("com.finly.ui.viewmodel.AmountDescriptionViewModel", ((Provider) amountDescriptionViewModelProvider)).put("com.finly.ui.viewmodel.BudgetViewModel", ((Provider) budgetViewModelProvider)).put("com.finly.ui.viewmodel.CalendarViewModel", ((Provider) calendarViewModelProvider)).put("com.finly.ui.viewmodel.CategorySelectionViewModel", ((Provider) categorySelectionViewModelProvider)).put("com.finly.ui.viewmodel.CustomCategoryCreatorViewModel", ((Provider) customCategoryCreatorViewModelProvider)).put("com.finly.ui.viewmodel.DashboardViewModel", ((Provider) dashboardViewModelProvider)).put("com.finly.ui.viewmodel.SavingsGoalViewModel", ((Provider) savingsGoalViewModelProvider)).put("com.finly.ui.viewmodel.SettingsViewModel", ((Provider) settingsViewModelProvider)).put("com.finly.ui.viewmodel.StatisticsViewModel", ((Provider) statisticsViewModelProvider)).build();
     }
 
     @Override
@@ -503,22 +521,31 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
           case 0: // com.finly.ui.viewmodel.AddTransactionViewModel 
           return (T) new AddTransactionViewModel(singletonCImpl.transactionRepositoryProvider.get(), viewModelCImpl.savedStateHandle, ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 1: // com.finly.ui.viewmodel.BudgetViewModel 
+          case 1: // com.finly.ui.viewmodel.AmountDescriptionViewModel 
+          return (T) new AmountDescriptionViewModel(singletonCImpl.transactionRepositoryProvider.get(), singletonCImpl.customCategoryRepositoryProvider.get());
+
+          case 2: // com.finly.ui.viewmodel.BudgetViewModel 
           return (T) new BudgetViewModel(singletonCImpl.budgetRepositoryProvider.get(), singletonCImpl.transactionRepositoryProvider.get());
 
-          case 2: // com.finly.ui.viewmodel.CalendarViewModel 
+          case 3: // com.finly.ui.viewmodel.CalendarViewModel 
           return (T) new CalendarViewModel(singletonCImpl.transactionRepositoryProvider.get());
 
-          case 3: // com.finly.ui.viewmodel.DashboardViewModel 
+          case 4: // com.finly.ui.viewmodel.CategorySelectionViewModel 
+          return (T) new CategorySelectionViewModel(singletonCImpl.customCategoryRepositoryProvider.get());
+
+          case 5: // com.finly.ui.viewmodel.CustomCategoryCreatorViewModel 
+          return (T) new CustomCategoryCreatorViewModel(singletonCImpl.customCategoryRepositoryProvider.get());
+
+          case 6: // com.finly.ui.viewmodel.DashboardViewModel 
           return (T) new DashboardViewModel(singletonCImpl.transactionRepositoryProvider.get());
 
-          case 4: // com.finly.ui.viewmodel.SavingsGoalViewModel 
+          case 7: // com.finly.ui.viewmodel.SavingsGoalViewModel 
           return (T) new SavingsGoalViewModel(singletonCImpl.savingsGoalRepositoryProvider.get());
 
-          case 5: // com.finly.ui.viewmodel.SettingsViewModel 
+          case 8: // com.finly.ui.viewmodel.SettingsViewModel 
           return (T) new SettingsViewModel(singletonCImpl.transactionRepositoryProvider.get(), singletonCImpl.securityPreferencesProvider.get(), singletonCImpl.appLockManagerProvider.get(), ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 6: // com.finly.ui.viewmodel.StatisticsViewModel 
+          case 9: // com.finly.ui.viewmodel.StatisticsViewModel 
           return (T) new StatisticsViewModel(singletonCImpl.transactionRepositoryProvider.get());
 
           default: throw new AssertionError(id);
@@ -624,6 +651,10 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
 
     private Provider<AppLockManager> appLockManagerProvider;
 
+    private Provider<CustomCategoryDao> provideCustomCategoryDaoProvider;
+
+    private Provider<CustomCategoryRepository> customCategoryRepositoryProvider;
+
     private Provider<BudgetDao> provideBudgetDaoProvider;
 
     private Provider<BudgetRepository> budgetRepositoryProvider;
@@ -647,11 +678,13 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
       this.transactionRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<TransactionRepository>(singletonCImpl, 0));
       this.securityPreferencesProvider = DoubleCheck.provider(new SwitchingProvider<SecurityPreferences>(singletonCImpl, 4));
       this.appLockManagerProvider = DoubleCheck.provider(new SwitchingProvider<AppLockManager>(singletonCImpl, 3));
-      this.provideBudgetDaoProvider = DoubleCheck.provider(new SwitchingProvider<BudgetDao>(singletonCImpl, 6));
-      this.budgetRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<BudgetRepository>(singletonCImpl, 5));
-      this.provideSavingsGoalDaoProvider = DoubleCheck.provider(new SwitchingProvider<SavingsGoalDao>(singletonCImpl, 8));
-      this.savingsGoalRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<SavingsGoalRepository>(singletonCImpl, 7));
-      this.provideParserFactoryProvider = DoubleCheck.provider(new SwitchingProvider<ParserFactory>(singletonCImpl, 9));
+      this.provideCustomCategoryDaoProvider = DoubleCheck.provider(new SwitchingProvider<CustomCategoryDao>(singletonCImpl, 6));
+      this.customCategoryRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<CustomCategoryRepository>(singletonCImpl, 5));
+      this.provideBudgetDaoProvider = DoubleCheck.provider(new SwitchingProvider<BudgetDao>(singletonCImpl, 8));
+      this.budgetRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<BudgetRepository>(singletonCImpl, 7));
+      this.provideSavingsGoalDaoProvider = DoubleCheck.provider(new SwitchingProvider<SavingsGoalDao>(singletonCImpl, 10));
+      this.savingsGoalRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<SavingsGoalRepository>(singletonCImpl, 9));
+      this.provideParserFactoryProvider = DoubleCheck.provider(new SwitchingProvider<ParserFactory>(singletonCImpl, 11));
     }
 
     @Override
@@ -712,19 +745,25 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
           case 4: // com.finly.data.local.SecurityPreferences 
           return (T) new SecurityPreferences(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 5: // com.finly.data.repository.BudgetRepository 
+          case 5: // com.finly.data.repository.CustomCategoryRepository 
+          return (T) new CustomCategoryRepository(singletonCImpl.provideCustomCategoryDaoProvider.get());
+
+          case 6: // com.finly.data.local.CustomCategoryDao 
+          return (T) DatabaseModule_ProvideCustomCategoryDaoFactory.provideCustomCategoryDao(singletonCImpl.provideAppDatabaseProvider.get());
+
+          case 7: // com.finly.data.repository.BudgetRepository 
           return (T) new BudgetRepository(singletonCImpl.provideBudgetDaoProvider.get());
 
-          case 6: // com.finly.data.local.BudgetDao 
+          case 8: // com.finly.data.local.BudgetDao 
           return (T) DatabaseModule_ProvideBudgetDaoFactory.provideBudgetDao(singletonCImpl.provideAppDatabaseProvider.get());
 
-          case 7: // com.finly.data.repository.SavingsGoalRepository 
+          case 9: // com.finly.data.repository.SavingsGoalRepository 
           return (T) new SavingsGoalRepository(singletonCImpl.provideSavingsGoalDaoProvider.get());
 
-          case 8: // com.finly.data.local.SavingsGoalDao 
+          case 10: // com.finly.data.local.SavingsGoalDao 
           return (T) DatabaseModule_ProvideSavingsGoalDaoFactory.provideSavingsGoalDao(singletonCImpl.provideAppDatabaseProvider.get());
 
-          case 9: // com.finly.parser.ParserFactory 
+          case 11: // com.finly.parser.ParserFactory 
           return (T) ParserModule_ProvideParserFactoryFactory.provideParserFactory();
 
           default: throw new AssertionError(id);

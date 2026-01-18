@@ -23,8 +23,11 @@ import com.finly.data.local.SecurityPreferences
 import com.finly.service.QuickAddNotificationService
 import com.finly.service.TransactionNotificationService
 import com.finly.ui.screens.AddTransactionScreen
+import com.finly.ui.screens.AmountDescriptionScreen
 import com.finly.ui.screens.BudgetScreen
 import com.finly.ui.screens.CalendarScreen
+import com.finly.ui.screens.CategorySelectionScreen
+import com.finly.ui.screens.CustomCategoryCreatorScreen
 import com.finly.ui.screens.DashboardScreen
 import com.finly.ui.screens.LockScreen
 import com.finly.ui.screens.OnboardingScreen
@@ -185,11 +188,11 @@ fun FinlyApp(
         composable("calendar") {
             CalendarScreen(
                 onNavigateToAddTransaction = { timestamp ->
-                    navController.navigate("add_transaction/$timestamp")
+                    navController.navigate("category_selection/$timestamp/EXPENSE")
                 },
                 onNavigateToEditTransaction = { transactionId ->
                     val timestamp = System.currentTimeMillis()
-                    navController.navigate("add_transaction/$timestamp?transactionId=$transactionId")
+                    navController.navigate("category_selection/$timestamp/EXPENSE?transactionId=$transactionId")
                 },
                 onNavigateToSettings = {
                     navController.navigate("settings")
@@ -212,28 +215,79 @@ fun FinlyApp(
             )
         }
         
+        // NEW FLOW: Category Selection -> Custom Category Creator -> Amount/Description
         composable(
-            route = "add_transaction/{timestamp}?type={type}&transactionId={transactionId}",
+            route = "category_selection/{timestamp}/{type}?transactionId={transactionId}",
             arguments = listOf(
-                navArgument("timestamp") { 
-                    type = NavType.LongType
-                    defaultValue = System.currentTimeMillis()
+                navArgument("timestamp") { type = NavType.LongType },
+                navArgument("type") { type = NavType.StringType },
+                navArgument("transactionId") { type = NavType.LongType; defaultValue = 0L }
+            )
+        ) { backStackEntry ->
+            val timestamp = backStackEntry.arguments?.getLong("timestamp") ?: System.currentTimeMillis()
+            val typeString = backStackEntry.arguments?.getString("type") ?: "EXPENSE"
+            val transactionId = backStackEntry.arguments?.getLong("transactionId") ?: 0L
+            val transactionType = com.finly.data.local.entity.TransactionType.valueOf(typeString)
+            
+            CategorySelectionScreen(
+                transactionType = transactionType,
+                onNavigateBack = { navController.popBackStack() },
+                onCategorySelected = { isCustom, categoryId ->
+                    navController.navigate("amount_description/$timestamp/$isCustom/$categoryId/$typeString?transactionId=$transactionId")
                 },
-                navArgument("type") {
-                    type = NavType.StringType
-                    nullable = true
-                    defaultValue = null
-                },
-                navArgument("transactionId") {
-                    type = NavType.LongType
-                    defaultValue = 0L
+                onCreateCustomCategory = {
+                    navController.navigate("custom_category_creator/$timestamp/$typeString?transactionId=$transactionId")
                 }
             )
-        ) {
-            AddTransactionScreen(
-                onNavigateBack = {
+        }
+        
+        composable(
+            route = "custom_category_creator/{timestamp}/{type}?transactionId={transactionId}",
+            arguments = listOf(
+                navArgument("timestamp") { type = NavType.LongType },
+                navArgument("type") { type = NavType.StringType },
+                navArgument("transactionId") { type = NavType.LongType; defaultValue = 0L }
+            )
+        ) { backStackEntry ->
+            val timestamp = backStackEntry.arguments?.getLong("timestamp") ?: System.currentTimeMillis()
+            val typeString = backStackEntry.arguments?.getString("type") ?: "EXPENSE"
+            val transactionId = backStackEntry.arguments?.getLong("transactionId") ?: 0L
+            val transactionType = com.finly.data.local.entity.TransactionType.valueOf(typeString)
+            
+            CustomCategoryCreatorScreen(
+                transactionType = transactionType,
+                onNavigateBack = { navController.popBackStack() },
+                onCategoryCreated = { categoryId ->
                     navController.popBackStack()
+                    navController.navigate("amount_description/$timestamp/true/$categoryId/$typeString?transactionId=$transactionId")
                 }
+            )
+        }
+        
+        composable(
+            route = "amount_description/{timestamp}/{isCustom}/{categoryId}/{type}?transactionId={transactionId}",
+            arguments = listOf(
+                navArgument("timestamp") { type = NavType.LongType },
+                navArgument("isCustom") { type = NavType.BoolType },
+                navArgument("categoryId") { type = NavType.StringType },
+                navArgument("type") { type = NavType.StringType },
+                navArgument("transactionId") { type = NavType.LongType; defaultValue = 0L }
+            )
+        ) { backStackEntry ->
+            val timestamp = backStackEntry.arguments?.getLong("timestamp") ?: System.currentTimeMillis()
+            val isCustom = backStackEntry.arguments?.getBoolean("isCustom") ?: false
+            val categoryId = backStackEntry.arguments?.getString("categoryId") ?: ""
+            val typeString = backStackEntry.arguments?.getString("type") ?: "EXPENSE"
+            val transactionId = backStackEntry.arguments?.getLong("transactionId") ?: 0L
+            val transactionType = com.finly.data.local.entity.TransactionType.valueOf(typeString)
+            
+            AmountDescriptionScreen(
+                isCustomCategory = isCustom,
+                categoryId = categoryId,
+                transactionType = transactionType,
+                timestamp = timestamp,
+                transactionId = transactionId,
+                onNavigateBack = { navController.popBackStack("calendar", inclusive = false) }
             )
         }
         

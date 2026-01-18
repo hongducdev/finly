@@ -58,178 +58,179 @@
 34-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:17:9-54
 35        android:supportsRtl="true"
 35-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:18:9-35
-36        android:theme="@style/Theme.Finly" >
-36-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:19:9-43
-37        <activity
-37-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:22:9-31:20
-38            android:name="com.finly.ui.MainActivity"
-38-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:23:13-44
-39            android:exported="true"
-39-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:24:13-36
-40            android:launchMode="singleTop"
-40-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:25:13-43
-41            android:theme="@style/Theme.Finly" >
-41-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:26:13-47
-42            <intent-filter>
-42-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:27:13-30:29
-43                <action android:name="android.intent.action.MAIN" />
-43-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:28:17-69
-43-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:28:25-66
-44
-45                <category android:name="android.intent.category.LAUNCHER" />
-45-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:29:17-77
-45-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:29:27-74
-46            </intent-filter>
-47        </activity>
-48
-49        <!-- NotificationListenerService để đọc thông báo giao dịch -->
-50        <service
-50-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:34:9-42:19
-51            android:name="com.finly.service.TransactionNotificationService"
-51-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:35:13-67
-52            android:exported="true"
-52-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:36:13-36
-53            android:label="@string/notification_service_label"
-53-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:37:13-63
-54            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
-54-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:38:13-87
-55            <intent-filter>
-55-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:39:13-41:29
-56                <action android:name="android.service.notification.NotificationListenerService" />
-56-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:40:17-99
-56-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:40:25-96
-57            </intent-filter>
-58        </service>
-59
-60        <!-- QuickAdd Notification Service -->
-61        <service
-61-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:45:9-52:19
-62            android:name="com.finly.service.QuickAddNotificationService"
-62-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:46:13-64
-63            android:exported="false"
-63-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:47:13-37
-64            android:foregroundServiceType="specialUse" >
-64-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:48:13-55
-65            <property
-65-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:49:13-51:67
-66                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-66-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:50:17-76
-67                android:value="Quick add transaction shortcuts" />
-67-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:51:17-64
-68        </service>
-69
-70        <!-- Home Screen Widget -->
-71        <receiver
-71-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:55:9-66:20
-72            android:name="com.finly.widget.FinlyWidgetProvider"
-72-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:56:13-55
-73            android:exported="true" >
-73-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:57:13-36
-74            <intent-filter>
-74-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:58:13-61:29
-75                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-75-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:59:17-84
-75-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:59:25-81
-76                <action android:name="com.finly.ACTION_REFRESH_WIDGET" />
-76-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:60:17-74
-76-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:60:25-71
-77            </intent-filter>
-78
-79            <meta-data
-79-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:63:13-65:55
-80                android:name="android.appwidget.provider"
-80-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:64:17-58
-81                android:resource="@xml/widget_info" />
-81-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:65:17-52
-82        </receiver>
-83
-84        <activity
-84-->[androidx.compose.ui:ui-tooling-android:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\0e391351ca19f2504d11aa1bf6b6bdd8\transformed\ui-tooling-release\AndroidManifest.xml:23:9-25:39
-85            android:name="androidx.compose.ui.tooling.PreviewActivity"
-85-->[androidx.compose.ui:ui-tooling-android:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\0e391351ca19f2504d11aa1bf6b6bdd8\transformed\ui-tooling-release\AndroidManifest.xml:24:13-71
-86            android:exported="true" />
-86-->[androidx.compose.ui:ui-tooling-android:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\0e391351ca19f2504d11aa1bf6b6bdd8\transformed\ui-tooling-release\AndroidManifest.xml:25:13-36
-87        <activity
-87-->[androidx.compose.ui:ui-test-manifest:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\09d29e95ca30643b1251afeada259ab7\transformed\ui-test-manifest-1.6.8\AndroidManifest.xml:23:9-25:39
-88            android:name="androidx.activity.ComponentActivity"
-88-->[androidx.compose.ui:ui-test-manifest:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\09d29e95ca30643b1251afeada259ab7\transformed\ui-test-manifest-1.6.8\AndroidManifest.xml:24:13-63
-89            android:exported="true" />
-89-->[androidx.compose.ui:ui-test-manifest:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\09d29e95ca30643b1251afeada259ab7\transformed\ui-test-manifest-1.6.8\AndroidManifest.xml:25:13-36
-90
-91        <provider
-91-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
-92            android:name="androidx.startup.InitializationProvider"
-92-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
-93            android:authorities="com.finly.androidx-startup"
-93-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
-94            android:exported="false" >
-94-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
-95            <meta-data
-95-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
-96                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-96-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
-97                android:value="androidx.startup" />
-97-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
-98            <meta-data
-98-->[androidx.lifecycle:lifecycle-process:2.8.4] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\6ab44c091aa9cff72f705a87ffeb6218\transformed\lifecycle-process-2.8.4\AndroidManifest.xml:29:13-31:52
-99                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-99-->[androidx.lifecycle:lifecycle-process:2.8.4] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\6ab44c091aa9cff72f705a87ffeb6218\transformed\lifecycle-process-2.8.4\AndroidManifest.xml:30:17-78
-100                android:value="androidx.startup" />
-100-->[androidx.lifecycle:lifecycle-process:2.8.4] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\6ab44c091aa9cff72f705a87ffeb6218\transformed\lifecycle-process-2.8.4\AndroidManifest.xml:31:17-49
-101            <meta-data
-101-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
-102                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-102-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
-103                android:value="androidx.startup" />
-103-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
-104        </provider>
-105
-106        <service
-106-->[androidx.room:room-runtime:2.6.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e68ce9d460995e70a3e112b068f271e8\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
-107            android:name="androidx.room.MultiInstanceInvalidationService"
-107-->[androidx.room:room-runtime:2.6.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e68ce9d460995e70a3e112b068f271e8\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
-108            android:directBootAware="true"
-108-->[androidx.room:room-runtime:2.6.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e68ce9d460995e70a3e112b068f271e8\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
-109            android:exported="false" />
-109-->[androidx.room:room-runtime:2.6.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e68ce9d460995e70a3e112b068f271e8\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
-110
-111        <receiver
-111-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
-112            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-112-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
-113            android:directBootAware="false"
-113-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
-114            android:enabled="true"
-114-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
-115            android:exported="true"
-115-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
-116            android:permission="android.permission.DUMP" >
-116-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
-117            <intent-filter>
-117-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
-118                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-118-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
-118-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
-119            </intent-filter>
-120            <intent-filter>
-120-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
-121                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-121-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
-121-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
-122            </intent-filter>
-123            <intent-filter>
-123-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
-124                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-124-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
-124-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
-125            </intent-filter>
-126            <intent-filter>
-126-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
-127                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-127-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
-127-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
-128            </intent-filter>
-129        </receiver>
-130    </application>
-131
-132</manifest>
+36        android:testOnly="true"
+37        android:theme="@style/Theme.Finly" >
+37-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:19:9-43
+38        <activity
+38-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:22:9-31:20
+39            android:name="com.finly.ui.MainActivity"
+39-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:23:13-44
+40            android:exported="true"
+40-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:24:13-36
+41            android:launchMode="singleTop"
+41-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:25:13-43
+42            android:theme="@style/Theme.Finly" >
+42-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:26:13-47
+43            <intent-filter>
+43-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:27:13-30:29
+44                <action android:name="android.intent.action.MAIN" />
+44-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:28:17-69
+44-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:28:25-66
+45
+46                <category android:name="android.intent.category.LAUNCHER" />
+46-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:29:17-77
+46-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:29:27-74
+47            </intent-filter>
+48        </activity>
+49
+50        <!-- NotificationListenerService để đọc thông báo giao dịch -->
+51        <service
+51-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:34:9-42:19
+52            android:name="com.finly.service.TransactionNotificationService"
+52-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:35:13-67
+53            android:exported="true"
+53-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:36:13-36
+54            android:label="@string/notification_service_label"
+54-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:37:13-63
+55            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+55-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:38:13-87
+56            <intent-filter>
+56-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:39:13-41:29
+57                <action android:name="android.service.notification.NotificationListenerService" />
+57-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:40:17-99
+57-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:40:25-96
+58            </intent-filter>
+59        </service>
+60
+61        <!-- QuickAdd Notification Service -->
+62        <service
+62-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:45:9-52:19
+63            android:name="com.finly.service.QuickAddNotificationService"
+63-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:46:13-64
+64            android:exported="false"
+64-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:47:13-37
+65            android:foregroundServiceType="specialUse" >
+65-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:48:13-55
+66            <property
+66-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:49:13-51:67
+67                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+67-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:50:17-76
+68                android:value="Quick add transaction shortcuts" />
+68-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:51:17-64
+69        </service>
+70
+71        <!-- Home Screen Widget -->
+72        <receiver
+72-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:55:9-66:20
+73            android:name="com.finly.widget.FinlyWidgetProvider"
+73-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:56:13-55
+74            android:exported="true" >
+74-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:57:13-36
+75            <intent-filter>
+75-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:58:13-61:29
+76                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+76-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:59:17-84
+76-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:59:25-81
+77                <action android:name="com.finly.ACTION_REFRESH_WIDGET" />
+77-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:60:17-74
+77-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:60:25-71
+78            </intent-filter>
+79
+80            <meta-data
+80-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:63:13-65:55
+81                android:name="android.appwidget.provider"
+81-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:64:17-58
+82                android:resource="@xml/widget_info" />
+82-->D:\MyProjects\finly\app\src\main\AndroidManifest.xml:65:17-52
+83        </receiver>
+84
+85        <activity
+85-->[androidx.compose.ui:ui-tooling-android:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\0e391351ca19f2504d11aa1bf6b6bdd8\transformed\ui-tooling-release\AndroidManifest.xml:23:9-25:39
+86            android:name="androidx.compose.ui.tooling.PreviewActivity"
+86-->[androidx.compose.ui:ui-tooling-android:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\0e391351ca19f2504d11aa1bf6b6bdd8\transformed\ui-tooling-release\AndroidManifest.xml:24:13-71
+87            android:exported="true" />
+87-->[androidx.compose.ui:ui-tooling-android:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\0e391351ca19f2504d11aa1bf6b6bdd8\transformed\ui-tooling-release\AndroidManifest.xml:25:13-36
+88        <activity
+88-->[androidx.compose.ui:ui-test-manifest:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\09d29e95ca30643b1251afeada259ab7\transformed\ui-test-manifest-1.6.8\AndroidManifest.xml:23:9-25:39
+89            android:name="androidx.activity.ComponentActivity"
+89-->[androidx.compose.ui:ui-test-manifest:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\09d29e95ca30643b1251afeada259ab7\transformed\ui-test-manifest-1.6.8\AndroidManifest.xml:24:13-63
+90            android:exported="true" />
+90-->[androidx.compose.ui:ui-test-manifest:1.6.8] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\09d29e95ca30643b1251afeada259ab7\transformed\ui-test-manifest-1.6.8\AndroidManifest.xml:25:13-36
+91
+92        <provider
+92-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+93            android:name="androidx.startup.InitializationProvider"
+93-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+94            android:authorities="com.finly.androidx-startup"
+94-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+95            android:exported="false" >
+95-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+96            <meta-data
+96-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+97                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+97-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+98                android:value="androidx.startup" />
+98-->[androidx.emoji2:emoji2:1.3.0] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e59b154ba1b6fa37df0134ec66abea04\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+99            <meta-data
+99-->[androidx.lifecycle:lifecycle-process:2.8.4] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\6ab44c091aa9cff72f705a87ffeb6218\transformed\lifecycle-process-2.8.4\AndroidManifest.xml:29:13-31:52
+100                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+100-->[androidx.lifecycle:lifecycle-process:2.8.4] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\6ab44c091aa9cff72f705a87ffeb6218\transformed\lifecycle-process-2.8.4\AndroidManifest.xml:30:17-78
+101                android:value="androidx.startup" />
+101-->[androidx.lifecycle:lifecycle-process:2.8.4] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\6ab44c091aa9cff72f705a87ffeb6218\transformed\lifecycle-process-2.8.4\AndroidManifest.xml:31:17-49
+102            <meta-data
+102-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+103                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+103-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+104                android:value="androidx.startup" />
+104-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+105        </provider>
+106
+107        <service
+107-->[androidx.room:room-runtime:2.6.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e68ce9d460995e70a3e112b068f271e8\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
+108            android:name="androidx.room.MultiInstanceInvalidationService"
+108-->[androidx.room:room-runtime:2.6.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e68ce9d460995e70a3e112b068f271e8\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
+109            android:directBootAware="true"
+109-->[androidx.room:room-runtime:2.6.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e68ce9d460995e70a3e112b068f271e8\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
+110            android:exported="false" />
+110-->[androidx.room:room-runtime:2.6.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\e68ce9d460995e70a3e112b068f271e8\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
+111
+112        <receiver
+112-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+113            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+113-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+114            android:directBootAware="false"
+114-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+115            android:enabled="true"
+115-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+116            android:exported="true"
+116-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+117            android:permission="android.permission.DUMP" >
+117-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+118            <intent-filter>
+118-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+119                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+119-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+119-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+120            </intent-filter>
+121            <intent-filter>
+121-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+122                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+122-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+122-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+123            </intent-filter>
+124            <intent-filter>
+124-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+125                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+125-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+125-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+126            </intent-filter>
+127            <intent-filter>
+127-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+128                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+128-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+128-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\hongducdev\.gradle\caches\9.0-milestone-1\transforms\1794c6109a382b5e313acf88eb2918e8\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+129            </intent-filter>
+130        </receiver>
+131    </application>
+132
+133</manifest>

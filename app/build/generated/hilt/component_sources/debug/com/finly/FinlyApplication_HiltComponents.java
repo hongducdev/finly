@@ -5,8 +5,11 @@ import com.finly.di.ParserModule;
 import com.finly.service.TransactionNotificationService_GeneratedInjector;
 import com.finly.ui.MainActivity_GeneratedInjector;
 import com.finly.ui.viewmodel.AddTransactionViewModel_HiltModules;
+import com.finly.ui.viewmodel.AmountDescriptionViewModel_HiltModules;
 import com.finly.ui.viewmodel.BudgetViewModel_HiltModules;
 import com.finly.ui.viewmodel.CalendarViewModel_HiltModules;
+import com.finly.ui.viewmodel.CategorySelectionViewModel_HiltModules;
+import com.finly.ui.viewmodel.CustomCategoryCreatorViewModel_HiltModules;
 import com.finly.ui.viewmodel.DashboardViewModel_HiltModules;
 import com.finly.ui.viewmodel.SavingsGoalViewModel_HiltModules;
 import com.finly.ui.viewmodel.SettingsViewModel_HiltModules;
@@ -167,8 +170,11 @@ public final class FinlyApplication_HiltComponents {
   @Subcomponent(
       modules = {
           AddTransactionViewModel_HiltModules.KeyModule.class,
+          AmountDescriptionViewModel_HiltModules.KeyModule.class,
           BudgetViewModel_HiltModules.KeyModule.class,
           CalendarViewModel_HiltModules.KeyModule.class,
+          CategorySelectionViewModel_HiltModules.KeyModule.class,
+          CustomCategoryCreatorViewModel_HiltModules.KeyModule.class,
           DashboardViewModel_HiltModules.KeyModule.class,
           ActivityCBuilderModule.class,
           ViewModelCBuilderModule.class,
@@ -213,8 +219,11 @@ public final class FinlyApplication_HiltComponents {
   @Subcomponent(
       modules = {
           AddTransactionViewModel_HiltModules.BindsModule.class,
+          AmountDescriptionViewModel_HiltModules.BindsModule.class,
           BudgetViewModel_HiltModules.BindsModule.class,
           CalendarViewModel_HiltModules.BindsModule.class,
+          CategorySelectionViewModel_HiltModules.BindsModule.class,
+          CustomCategoryCreatorViewModel_HiltModules.BindsModule.class,
           DashboardViewModel_HiltModules.BindsModule.class,
           HiltWrapper_HiltViewModelFactory_ViewModelModule.class,
           SavingsGoalViewModel_HiltModules.BindsModule.class,
