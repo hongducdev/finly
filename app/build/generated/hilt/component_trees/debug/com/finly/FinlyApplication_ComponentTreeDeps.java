@@ -22,6 +22,8 @@ import hilt_aggregated_deps._com_finly_di_DatabaseModule;
 import hilt_aggregated_deps._com_finly_di_ParserModule;
 import hilt_aggregated_deps._com_finly_service_TransactionNotificationService_GeneratedInjector;
 import hilt_aggregated_deps._com_finly_ui_MainActivity_GeneratedInjector;
+import hilt_aggregated_deps._com_finly_ui_viewmodel_AddEditDebtViewModel_HiltModules_BindsModule;
+import hilt_aggregated_deps._com_finly_ui_viewmodel_AddEditDebtViewModel_HiltModules_KeyModule;
 import hilt_aggregated_deps._com_finly_ui_viewmodel_AddTransactionViewModel_HiltModules_BindsModule;
 import hilt_aggregated_deps._com_finly_ui_viewmodel_AddTransactionViewModel_HiltModules_KeyModule;
 import hilt_aggregated_deps._com_finly_ui_viewmodel_AmountDescriptionViewModel_HiltModules_BindsModule;
@@ -36,6 +38,8 @@ import hilt_aggregated_deps._com_finly_ui_viewmodel_CustomCategoryCreatorViewMod
 import hilt_aggregated_deps._com_finly_ui_viewmodel_CustomCategoryCreatorViewModel_HiltModules_KeyModule;
 import hilt_aggregated_deps._com_finly_ui_viewmodel_DashboardViewModel_HiltModules_BindsModule;
 import hilt_aggregated_deps._com_finly_ui_viewmodel_DashboardViewModel_HiltModules_KeyModule;
+import hilt_aggregated_deps._com_finly_ui_viewmodel_DebtViewModel_HiltModules_BindsModule;
+import hilt_aggregated_deps._com_finly_ui_viewmodel_DebtViewModel_HiltModules_KeyModule;
 import hilt_aggregated_deps._com_finly_ui_viewmodel_SavingsGoalViewModel_HiltModules_BindsModule;
 import hilt_aggregated_deps._com_finly_ui_viewmodel_SavingsGoalViewModel_HiltModules_KeyModule;
 import hilt_aggregated_deps._com_finly_ui_viewmodel_SettingsViewModel_HiltModules_BindsModule;
@@ -88,6 +92,8 @@ import hilt_aggregated_deps._dagger_hilt_android_internal_modules_HiltWrapper_Ac
         _com_finly_di_ParserModule.class,
         _com_finly_service_TransactionNotificationService_GeneratedInjector.class,
         _com_finly_ui_MainActivity_GeneratedInjector.class,
+        _com_finly_ui_viewmodel_AddEditDebtViewModel_HiltModules_BindsModule.class,
+        _com_finly_ui_viewmodel_AddEditDebtViewModel_HiltModules_KeyModule.class,
         _com_finly_ui_viewmodel_AddTransactionViewModel_HiltModules_BindsModule.class,
         _com_finly_ui_viewmodel_AddTransactionViewModel_HiltModules_KeyModule.class,
         _com_finly_ui_viewmodel_AmountDescriptionViewModel_HiltModules_BindsModule.class,
@@ -102,6 +108,8 @@ import hilt_aggregated_deps._dagger_hilt_android_internal_modules_HiltWrapper_Ac
         _com_finly_ui_viewmodel_CustomCategoryCreatorViewModel_HiltModules_KeyModule.class,
         _com_finly_ui_viewmodel_DashboardViewModel_HiltModules_BindsModule.class,
         _com_finly_ui_viewmodel_DashboardViewModel_HiltModules_KeyModule.class,
+        _com_finly_ui_viewmodel_DebtViewModel_HiltModules_BindsModule.class,
+        _com_finly_ui_viewmodel_DebtViewModel_HiltModules_KeyModule.class,
         _com_finly_ui_viewmodel_SavingsGoalViewModel_HiltModules_BindsModule.class,
         _com_finly_ui_viewmodel_SavingsGoalViewModel_HiltModules_KeyModule.class,
         _com_finly_ui_viewmodel_SettingsViewModel_HiltModules_BindsModule.class,

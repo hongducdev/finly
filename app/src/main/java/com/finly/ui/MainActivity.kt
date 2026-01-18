@@ -29,6 +29,8 @@ import com.finly.ui.screens.CalendarScreen
 import com.finly.ui.screens.CategorySelectionScreen
 import com.finly.ui.screens.CustomCategoryCreatorScreen
 import com.finly.ui.screens.DashboardScreen
+import com.finly.ui.screens.DebtListScreen
+import com.finly.ui.screens.AddEditDebtScreen
 import com.finly.ui.screens.LockScreen
 import com.finly.ui.screens.OnboardingScreen
 import com.finly.ui.screens.SavingsGoalScreen
@@ -309,7 +311,24 @@ fun FinlyApp(
                 },
                 onNavigateToSavingsGoal = {
                     navController.navigate("savings_goal")
+                },
+                onNavigateToDebts = {
+                    navController.navigate("debt_list")
                 }
+            )
+        }
+        
+        // Debt Management
+        composable("debt_list") {
+            DebtListScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToAddDebt = { navController.navigate("add_debt") }
+            )
+        }
+        
+        composable("add_debt") {
+            AddEditDebtScreen(
+                onNavigateBack = { navController.popBackStack() }
             )
         }
         

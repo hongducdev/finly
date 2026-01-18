@@ -41,7 +41,8 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit,
     onNavigateToBudget: () -> Unit = {},
-    onNavigateToSavingsGoal: () -> Unit = {}
+    onNavigateToSavingsGoal: () -> Unit = {},
+    onNavigateToDebts: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -264,6 +265,15 @@ fun SettingsScreen(
                     title = "Mục tiêu tiết kiệm",
                     subtitle = "Theo dõi tiến trình tiết kiệm",
                     onClick = onNavigateToSavingsGoal
+                )
+                
+                HorizontalDivider(modifier = Modifier.padding(start = 56.dp))
+                
+                SettingsItem(
+                    icon = Icons.Default.MoneyOff,
+                    title = "Quản lý nợ",
+                    subtitle = "Theo dõi các khoản cho vay và đi vay",
+                    onClick = onNavigateToDebts
                 )
             }
 

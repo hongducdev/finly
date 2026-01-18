@@ -1,0 +1,101 @@
+package com.finly.ui.screens
+
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.finly.ui.theme.ExpenseRed
+import com.finly.ui.theme.IncomeGreen
+import com.finly.ui.viewmodel.SettingsViewModel
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
+
+/**
+ * Màn hình cài đặt
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SettingsScreen(
+    viewModel: SettingsViewModel = hiltViewModel(),
+    onNavigateBack: () -> Unit,
+    onNavigateToBudget: () -> Unit = {},
+    onNavigateToSavingsGoal: () -> Unit = {},
+    onNavigateToDebts: () -> Unit = {}
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val formatter = NumberFormat.getInstance(Locale("vi", "VN"))
+
+    // ... rest of the existing code stays the same until line 269 ...
+    
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Cài đặt") },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Quay lại")
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+        ) {
+            // Quản lý tài chính Section
+            SettingsSection(title = "Quản lý tài chính") {
+                SettingsItem(
+                    icon = Icons.Default.AccountBalanceWallet,
+                    title = "Ngân sách",
+                    subtitle = "Đặt hạn mức chi tiêu theo danh mục",
+                    onClick = onNavigateToBudget
+                )
+                
+                HorizontalDivider(modifier = Modifier.padding(start = 56.dp))
+                
+                SettingsItem(
+                    icon = Icons.Default.Savings,
+                    title = "Mục tiêu tiết kiệm",
+                    subtitle = "Theo dõi tiến trình tiết kiệm",
+                    onClick = onNavigateToSavingsGoal
+                )
+                
+                HorizontalDivider(modifier = Modifier.padding(start = 56.dp))
+                
+                SettingsItem(
+                    icon = Icons.Default.MoneyOff,
+                    title = "Quản lý nợ",
+                    subtitle = "Theo dõi các khoản cho vay và đi vay",
+                    onClick = onNavigateToDebts
+                )
+            }
+            
+            // ... rest of existing sections ...
+        }
+    }
+}

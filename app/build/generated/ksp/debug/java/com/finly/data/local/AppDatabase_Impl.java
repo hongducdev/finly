@@ -35,10 +35,12 @@ public final class AppDatabase_Impl extends AppDatabase {
 
   private volatile CustomCategoryDao _customCategoryDao;
 
+  private volatile DebtDao _debtDao;
+
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(4) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(5) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS `transactions` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `source` TEXT NOT NULL, `type` TEXT NOT NULL, `amount` INTEGER NOT NULL, `balance` INTEGER, `timestamp` INTEGER NOT NULL, `rawText` TEXT NOT NULL, `rawTextHash` TEXT NOT NULL, `description` TEXT, `category` TEXT, `customCategoryId` INTEGER)");
@@ -48,8 +50,9 @@ public final class AppDatabase_Impl extends AppDatabase {
         db.execSQL("CREATE TABLE IF NOT EXISTS `budgets` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `category` TEXT NOT NULL, `amount` INTEGER NOT NULL, `month` INTEGER NOT NULL, `year` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `savings_goals` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `targetAmount` INTEGER NOT NULL, `currentAmount` INTEGER NOT NULL, `icon` TEXT NOT NULL, `color` INTEGER NOT NULL, `targetDate` INTEGER, `createdAt` INTEGER NOT NULL, `isCompleted` INTEGER NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `custom_categories` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `iconName` TEXT NOT NULL, `type` TEXT NOT NULL, `color` TEXT NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `debts` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `type` TEXT NOT NULL, `personName` TEXT NOT NULL, `amount` INTEGER NOT NULL, `description` TEXT, `dueDate` INTEGER NOT NULL, `createdDate` INTEGER NOT NULL, `isPaid` INTEGER NOT NULL, `paidDate` INTEGER)");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a7a746cb18ec8e4a5099fce08d263c2f')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7b01d847694fb1fc6103caa6d74c93e8')");
       }
 
       @Override
@@ -58,6 +61,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         db.execSQL("DROP TABLE IF EXISTS `budgets`");
         db.execSQL("DROP TABLE IF EXISTS `savings_goals`");
         db.execSQL("DROP TABLE IF EXISTS `custom_categories`");
+        db.execSQL("DROP TABLE IF EXISTS `debts`");
         final List<? extends RoomDatabase.Callback> _callbacks = mCallbacks;
         if (_callbacks != null) {
           for (RoomDatabase.Callback _callback : _callbacks) {
@@ -175,9 +179,28 @@ public final class AppDatabase_Impl extends AppDatabase {
                   + " Expected:\n" + _infoCustomCategories + "\n"
                   + " Found:\n" + _existingCustomCategories);
         }
+        final HashMap<String, TableInfo.Column> _columnsDebts = new HashMap<String, TableInfo.Column>(9);
+        _columnsDebts.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDebts.put("type", new TableInfo.Column("type", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDebts.put("personName", new TableInfo.Column("personName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDebts.put("amount", new TableInfo.Column("amount", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDebts.put("description", new TableInfo.Column("description", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDebts.put("dueDate", new TableInfo.Column("dueDate", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDebts.put("createdDate", new TableInfo.Column("createdDate", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDebts.put("isPaid", new TableInfo.Column("isPaid", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDebts.put("paidDate", new TableInfo.Column("paidDate", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysDebts = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesDebts = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoDebts = new TableInfo("debts", _columnsDebts, _foreignKeysDebts, _indicesDebts);
+        final TableInfo _existingDebts = TableInfo.read(db, "debts");
+        if (!_infoDebts.equals(_existingDebts)) {
+          return new RoomOpenHelper.ValidationResult(false, "debts(com.finly.data.local.entity.Debt).\n"
+                  + " Expected:\n" + _infoDebts + "\n"
+                  + " Found:\n" + _existingDebts);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "a7a746cb18ec8e4a5099fce08d263c2f", "d3e00fa450e552a56c56a8df59e318dd");
+    }, "7b01d847694fb1fc6103caa6d74c93e8", "846ce07a43537a0f83d9a089b948332c");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -188,7 +211,7 @@ public final class AppDatabase_Impl extends AppDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     final HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "transactions","budgets","savings_goals","custom_categories");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "transactions","budgets","savings_goals","custom_categories","debts");
   }
 
   @Override
@@ -201,6 +224,7 @@ public final class AppDatabase_Impl extends AppDatabase {
       _db.execSQL("DELETE FROM `budgets`");
       _db.execSQL("DELETE FROM `savings_goals`");
       _db.execSQL("DELETE FROM `custom_categories`");
+      _db.execSQL("DELETE FROM `debts`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -219,6 +243,7 @@ public final class AppDatabase_Impl extends AppDatabase {
     _typeConvertersMap.put(BudgetDao.class, BudgetDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(SavingsGoalDao.class, SavingsGoalDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(CustomCategoryDao.class, CustomCategoryDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(DebtDao.class, DebtDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -289,6 +314,20 @@ public final class AppDatabase_Impl extends AppDatabase {
           _customCategoryDao = new CustomCategoryDao_Impl(this);
         }
         return _customCategoryDao;
+      }
+    }
+  }
+
+  @Override
+  public DebtDao debtDao() {
+    if (_debtDao != null) {
+      return _debtDao;
+    } else {
+      synchronized(this) {
+        if(_debtDao == null) {
+          _debtDao = new DebtDao_Impl(this);
+        }
+        return _debtDao;
       }
     }
   }
