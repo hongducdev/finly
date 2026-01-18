@@ -32,9 +32,7 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * Màn hình cài đặt
- */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
@@ -48,7 +46,7 @@ fun SettingsScreen(
     val context = LocalContext.current
     val formatter = NumberFormat.getInstance(Locale("vi", "VN"))
 
-    // Launcher để xin quyền POST_NOTIFICATIONS
+
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -57,21 +55,21 @@ fun SettingsScreen(
         }
     }
 
-    // Launcher để tạo file export
+
     val exportFileLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/json")
     ) { uri ->
         uri?.let { viewModel.exportData(it) }
     }
 
-    // Launcher để chọn file import
+
     val importFileLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
     ) { uri ->
         uri?.let { viewModel.importData(it) }
     }
 
-    // Xử lý sau khi xóa thành công
+
     LaunchedEffect(uiState.deleteSuccess) {
         if (uiState.deleteSuccess) {
             Toast.makeText(context, "Đã xóa tất cả giao dịch", Toast.LENGTH_SHORT).show()
@@ -79,7 +77,7 @@ fun SettingsScreen(
         }
     }
 
-    // Xử lý sau khi export thành công
+
     LaunchedEffect(uiState.exportSuccess) {
         if (uiState.exportSuccess) {
             Toast.makeText(context, "Đã xuất dữ liệu thành công!", Toast.LENGTH_SHORT).show()
@@ -87,7 +85,7 @@ fun SettingsScreen(
         }
     }
 
-    // Xử lý sau khi import thành công
+
     LaunchedEffect(uiState.importSuccess) {
         if (uiState.importSuccess) {
             Toast.makeText(context, "Đã nhập ${uiState.importedCount} giao dịch!", Toast.LENGTH_SHORT).show()
@@ -95,7 +93,7 @@ fun SettingsScreen(
         }
     }
 
-    // Xử lý lỗi
+
     LaunchedEffect(uiState.errorMessage) {
         uiState.errorMessage?.let { message ->
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
@@ -103,7 +101,7 @@ fun SettingsScreen(
         }
     }
 
-    // Dialog xác nhận xóa
+
     if (uiState.showDeleteConfirmDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.hideDeleteConfirmDialog() },
@@ -128,7 +126,7 @@ fun SettingsScreen(
         )
     }
 
-    // Loading overlay
+
     if (uiState.isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -138,9 +136,9 @@ fun SettingsScreen(
         }
     }
 
-    // PIN Creation Dialog
+
     var showPinDialog by remember { mutableStateOf(false) }
-    var pinStep by remember { mutableIntStateOf(0) } // 0: Enter, 1: Confirm
+    var pinStep by remember { mutableIntStateOf(0) }
     var firstPin by remember { mutableStateOf("") }
     var currentPinInput by remember { mutableStateOf("") }
     
@@ -151,7 +149,7 @@ fun SettingsScreen(
                 pinStep = 0
                 firstPin = ""
                 currentPinInput = ""
-                // If cancelled and lock not enabled, ensure toggle is off
+
                 if (!viewModel.isPinSet()) {
                     viewModel.toggleAppLock(false)
                 }
@@ -169,7 +167,7 @@ fun SettingsScreen(
                             }
                         },
                         singleLine = true,
-                        // VisualTransformation for PIN dots can be added here
+
                         keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                             keyboardType = androidx.compose.ui.text.input.KeyboardType.NumberPassword
                         )
@@ -186,8 +184,7 @@ fun SettingsScreen(
                                 pinStep = 1
                             } else {
                                 if (currentPinInput == firstPin) {
-                                    // Success
-                                    val hash = java.security.MessageDigest.getInstance("SHA-256")
+                                        val hash = java.security.MessageDigest.getInstance("SHA-256")
                                         .digest(currentPinInput.toByteArray())
                                         .joinToString("") { "%02x".format(it) }
                                     
@@ -223,45 +220,23 @@ fun SettingsScreen(
         )
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Cài đặt", fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Quay lại"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+        SettingsSection(title = "Quản lý tài chính") {
+            SettingsItem(
+                icon = Icons.Default.AccountBalanceWallet,
+                title = "Ngân sách",
+                subtitle = "Đặt hạn mức chi tiêu theo danh mục",
+                onClick = onNavigateToBudget
             )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-        ) {
-            // Quản lý tài chính Section
-            SettingsSection(title = "Quản lý tài chính") {
-                SettingsItem(
-                    icon = Icons.Default.AccountBalanceWallet,
-                    title = "Ngân sách",
-                    subtitle = "Đặt hạn mức chi tiêu theo danh mục",
-                    onClick = onNavigateToBudget
-                )
-                
-                HorizontalDivider(modifier = Modifier.padding(start = 56.dp))
-                
-                SettingsItem(
-                    icon = Icons.Default.Savings,
+            
+            HorizontalDivider(modifier = Modifier.padding(start = 56.dp))
+            
+            SettingsItem(
+                icon = Icons.Default.Savings,
                     title = "Mục tiêu tiết kiệm",
                     subtitle = "Theo dõi tiến trình tiết kiệm",
                     onClick = onNavigateToSavingsGoal
@@ -277,7 +252,7 @@ fun SettingsScreen(
                 )
             }
 
-            // Tiện ích Section
+
             SettingsSection(title = "Tiện ích") {
                 SettingsToggleItem(
                     icon = Icons.Default.NotificationsActive,
@@ -286,7 +261,6 @@ fun SettingsScreen(
                     checked = uiState.quickAddNotificationEnabled,
                     onCheckedChange = { enabled ->
                         if (enabled) {
-                            // Kiểm tra và xin quyền POST_NOTIFICATIONS cho Android 13+
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 val hasPermission = ContextCompat.checkSelfPermission(
                                     context,
@@ -308,7 +282,7 @@ fun SettingsScreen(
                 )
             }
             
-            // Bảo mật Section
+
             SettingsSection(title = "Bảo mật") {
                 SettingsToggleItem(
                     icon = Icons.Default.Lock,
@@ -337,7 +311,7 @@ fun SettingsScreen(
                 }
             }
 
-            // Dữ liệu Section
+
             SettingsSection(title = "Dữ liệu") {
                 SettingsInfoItem(
                     icon = Icons.Default.Receipt,
@@ -382,7 +356,7 @@ fun SettingsScreen(
                 )
             }
 
-            // Quyền ứng dụng Section
+
             SettingsSection(title = "Quyền ứng dụng") {
                 SettingsItem(
                     icon = Icons.Default.Notifications,
@@ -405,7 +379,7 @@ fun SettingsScreen(
                 )
             }
 
-            // Thông tin Section
+
             SettingsSection(title = "Thông tin") {
                 SettingsInfoItem(
                     icon = Icons.Default.Info,
@@ -425,11 +399,8 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(32.dp))
         }
     }
-}
 
-/**
- * Section header
- */
+
 @Composable
 private fun SettingsSection(
     title: String,
@@ -458,9 +429,7 @@ private fun SettingsSection(
     }
 }
 
-/**
- * Settings item với click action
- */
+
 @Composable
 private fun SettingsItem(
     icon: ImageVector,
@@ -509,9 +478,7 @@ private fun SettingsItem(
     }
 }
 
-/**
- * Settings item hiển thị thông tin (không click)
- */
+
 @Composable
 private fun SettingsInfoItem(
     icon: ImageVector,
@@ -549,9 +516,7 @@ private fun SettingsInfoItem(
     }
 }
 
-/**
- * Settings item với Switch toggle
- */
+
 @Composable
 private fun SettingsToggleItem(
     icon: ImageVector,

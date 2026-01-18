@@ -32,10 +32,7 @@ import com.finly.ui.viewmodel.DashboardViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * Dashboard Screen - Màn hình chính của ứng dụng
- * Hiển thị thống kê chi tiêu và danh sách giao dịch
- */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
@@ -97,17 +94,17 @@ fun DashboardScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Summary Cards
+
                 item {
                     SummarySection(uiState = uiState)
                 }
 
-                // Monthly Stats
+
                 item {
                     MonthlyStatsCard(uiState = uiState)
                 }
 
-                // Recent Transactions Header
+
                 item {
                     Text(
                         text = "Giao dịch gần đây",
@@ -116,7 +113,7 @@ fun DashboardScreen(
                     )
                 }
 
-                // Transaction List
+
                 if (uiState.recentTransactions.isEmpty()) {
                     item {
                         EmptyTransactionCard()
@@ -137,16 +134,14 @@ fun DashboardScreen(
     }
 }
 
-/**
- * Phần tổng quan chi tiêu hôm nay
- */
+
 @Composable
 private fun SummarySection(uiState: DashboardUiState) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Chi tiêu hôm nay
+
         SummaryCard(
             modifier = Modifier.weight(1f),
             title = "Chi hôm nay",
@@ -155,7 +150,7 @@ private fun SummarySection(uiState: DashboardUiState) {
             isExpense = true
         )
 
-        // Thu nhập hôm nay
+
         SummaryCard(
             modifier = Modifier.weight(1f),
             title = "Thu hôm nay",
@@ -166,9 +161,7 @@ private fun SummarySection(uiState: DashboardUiState) {
     }
 }
 
-/**
- * Card hiển thị số tiền tổng
- */
+
 @Composable
 private fun SummaryCard(
     modifier: Modifier = Modifier,
@@ -232,9 +225,7 @@ private fun SummaryCard(
     }
 }
 
-/**
- * Card thống kê tháng
- */
+
 @Composable
 private fun MonthlyStatsCard(uiState: DashboardUiState) {
     Card(
@@ -291,7 +282,7 @@ private fun MonthlyStatsCard(uiState: DashboardUiState) {
             
             Spacer(modifier = Modifier.height(16.dp))
             
-            // Balance
+
             val balance = uiState.monthIncome - uiState.monthExpense
             val balanceColor = if (balance >= 0) IncomeGreen else ExpenseRed
             
@@ -325,9 +316,7 @@ private fun MonthlyStatsCard(uiState: DashboardUiState) {
     }
 }
 
-/**
- * Item giao dịch trong danh sách
- */
+
 @Composable
 private fun TransactionItem(
     transaction: Transaction,
@@ -371,7 +360,7 @@ private fun TransactionItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Source Icon
+
             Box(
                 modifier = Modifier
                     .size(48.dp)
@@ -389,7 +378,7 @@ private fun TransactionItem(
             
             Spacer(modifier = Modifier.width(12.dp))
             
-            // Transaction Info
+
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = transaction.source.displayName,
@@ -414,7 +403,7 @@ private fun TransactionItem(
                 }
             }
             
-            // Amount
+
             Column(horizontalAlignment = Alignment.End) {
                 val isExpense = transaction.type == TransactionType.EXPENSE
                 val amountColor = if (isExpense) ExpenseRed else IncomeGreen
@@ -439,9 +428,7 @@ private fun TransactionItem(
     }
 }
 
-/**
- * Card hiển thị khi chưa có giao dịch
- */
+
 @Composable
 private fun EmptyTransactionCard() {
     Card(
@@ -479,7 +466,7 @@ private fun EmptyTransactionCard() {
     }
 }
 
-// ==================== Helper Functions ====================
+
 
 private fun getSourceIcon(source: TransactionSource): ImageVector {
     return when (source) {

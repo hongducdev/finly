@@ -48,92 +48,51 @@ fun CalendarScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Finly", fontWeight = FontWeight.Bold) },
-                actions = {
-                    // Nút thống kê
-                    IconButton(onClick = onNavigateToStatistics) {
-                        Icon(Icons.Default.PieChart, contentDescription = "Thống kê")
-                    }
-                    // Nút cài đặt
-                    IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Cài đặt")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item {
+            MonthSummaryCard(
+                income = uiState.monthlyIncome,
+                expense = uiState.monthlyExpense,
+                isAmountHidden = uiState.isAmountHidden,
+                onToggleHideAmount = { viewModel.toggleHideAmount() }
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { 
-                    // Truyền timestamp của ngày đã chọn (hoặc ngày hiện tại nếu chưa chọn)
-                    val selectedTimestamp = uiState.selectedDate?.timeInMillis ?: System.currentTimeMillis()
-                    onNavigateToAddTransaction(selectedTimestamp)
-                },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Thêm giao dịch")
-            }
         }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            // Month Summary Card
+        
+        item {
+            CalendarCard(
+                currentMonth = uiState.currentMonth,
+                selectedDate = uiState.selectedDate,
+                daySummaries = uiState.daySummaries,
+                onPreviousMonth = { viewModel.previousMonth() },
+                onNextMonth = { viewModel.nextMonth() },
+                onDateSelected = { viewModel.selectDate(it) },
+                daysInMonth = viewModel.getDaysInMonth(),
+                firstDayOfWeek = viewModel.getFirstDayOfWeek()
+            )
+        }
+        
+        if (uiState.selectedDate != null && uiState.selectedDayTransactions.isNotEmpty()) {
             item {
-                MonthSummaryCard(
-                    income = uiState.monthlyIncome,
-                    expense = uiState.monthlyExpense,
-                    isAmountHidden = uiState.isAmountHidden,
-                    onToggleHideAmount = { viewModel.toggleHideAmount() }
+                Text(
+                    text = "Giao dịch ngày ${uiState.selectedDate?.get(Calendar.DAY_OF_MONTH)}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
                 )
             }
             
-            // Calendar Card
-            item {
-                CalendarCard(
-                    currentMonth = uiState.currentMonth,
-                    selectedDate = uiState.selectedDate,
-                    daySummaries = uiState.daySummaries,
-                    onPreviousMonth = { viewModel.previousMonth() },
-                    onNextMonth = { viewModel.nextMonth() },
-                    onDateSelected = { viewModel.selectDate(it) },
-                    daysInMonth = viewModel.getDaysInMonth(),
-                    firstDayOfWeek = viewModel.getFirstDayOfWeek()
+            items(uiState.selectedDayTransactions) { transaction ->
+                TransactionItem(
+                    transaction = transaction,
+                    onClick = { onNavigateToEditTransaction(transaction.id) }
                 )
             }
-            
-            // Selected Day Transactions
-            if (uiState.selectedDate != null && uiState.selectedDayTransactions.isNotEmpty()) {
-                item {
-                    Text(
-                        text = "Giao dịch ngày ${uiState.selectedDate?.get(Calendar.DAY_OF_MONTH)}",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                
-                items(uiState.selectedDayTransactions) { transaction ->
-                    TransactionItem(
-                        transaction = transaction,
-                        onClick = { onNavigateToEditTransaction(transaction.id) }
-                    )
-                }
-            } else if (uiState.selectedDate != null) {
-                item {
-                    EmptyDayCard()
-                }
+        } else if (uiState.selectedDate != null) {
+            item {
+                EmptyDayCard()
             }
         }
     }

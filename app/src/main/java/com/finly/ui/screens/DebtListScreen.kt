@@ -33,9 +33,7 @@ import com.finly.util.CurrencyFormatter
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * Màn hình danh sách nợ
- */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DebtListScreen(
@@ -45,66 +43,32 @@ fun DebtListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Quản lý nợ", fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Quay lại"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onNavigateToAddDebt,
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Thêm khoản nợ")
-            }
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        SummarySection(uiState)
+        
+        FilterTabs(
+            selectedFilter = uiState.filter,
+            onFilterSelected = { viewModel.setFilter(it) }
+        )
+        
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Summary cards
-            SummarySection(uiState)
-            
-            // Filter tabs
-            FilterTabs(
-                selectedFilter = uiState.filter,
-                onFilterSelected = { viewModel.setFilter(it) }
-            )
-            
-            // Debt list
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                if (uiState.debts.isEmpty()) {
-                    item {
-                        EmptyState()
-                    }
-                } else {
-                    items(uiState.debts, key = { it.id }) { debt ->
-                        DebtCard(
-                            debt = debt,
-                            onTogglePaid = { viewModel.togglePaidStatus(debt) },
-                            onDelete = { viewModel.deleteDebt(debt) }
-                        )
-                    }
+            if (uiState.debts.isEmpty()) {
+                item {
+                    EmptyState()
+                }
+            } else {
+                items(uiState.debts, key = { it.id }) { debt ->
+                    DebtCard(
+                        debt = debt,
+                        onTogglePaid = { viewModel.togglePaidStatus(debt) },
+                        onDelete = { viewModel.deleteDebt(debt) }
+                    )
                 }
             }
         }
@@ -119,7 +83,7 @@ private fun SummarySection(uiState: com.finly.ui.viewmodel.DebtListUiState) {
             .padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Cho vay
+
         Card(
             modifier = Modifier.weight(1f),
             colors = CardDefaults.cardColors(
@@ -146,7 +110,7 @@ private fun SummarySection(uiState: com.finly.ui.viewmodel.DebtListUiState) {
             }
         }
         
-        // Đi vay
+
         Card(
             modifier = Modifier.weight(1f),
             colors = CardDefaults.cardColors(
@@ -333,7 +297,7 @@ private fun DebtCard(
             }
         }
         
-        // Dropdown menu
+
         DropdownMenu(
             expanded = showMenu,
             onDismissRequest = { showMenu = false }

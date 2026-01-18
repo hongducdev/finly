@@ -8,10 +8,17 @@ import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
@@ -22,6 +29,7 @@ import androidx.navigation.navArgument
 import com.finly.data.local.SecurityPreferences
 import com.finly.service.QuickAddNotificationService
 import com.finly.service.TransactionNotificationService
+import com.finly.ui.components.FinlyBottomBar
 import com.finly.ui.screens.AddTransactionScreen
 import com.finly.ui.screens.AmountDescriptionScreen
 import com.finly.ui.screens.BudgetScreen
@@ -41,9 +49,7 @@ import com.finly.util.AppLockManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-/**
- * MainActivity - Entry point của ứng dụng
- */
+
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
 
@@ -53,16 +59,12 @@ class MainActivity : FragmentActivity() {
     @Inject
     lateinit var securityPreferences: SecurityPreferences
 
-    // State để xử lý deep link từ notification
     private var pendingTransactionType: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Initialize Lock State
         appLockManager.initOnStartup()
-        
-        // Xử lý intent từ notification
         handleIntent(intent)
         
         setContent {
@@ -84,7 +86,7 @@ class MainActivity : FragmentActivity() {
                             Box(
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .zIndex(999f) // Ensure it's on top
+                                    .zIndex(999f)
                             ) {
                                 LockScreen(
                                     appLockManager = appLockManager,
@@ -116,15 +118,12 @@ class MainActivity : FragmentActivity() {
     
     override fun onResume() {
         super.onResume()
-        // Check lock when returning to foreground
         appLockManager.checkAndLock()
-        // Update last active timestamp
         appLockManager.updateLastActive()
     }
     
     override fun onPause() {
         super.onPause()
-        // Record background time
         appLockManager.onAppBackgrounded()
     }
     
@@ -133,9 +132,6 @@ class MainActivity : FragmentActivity() {
         appLockManager.updateLastActive()
     }
     
-    /**
-     * Kiểm tra quyền Notification Listener
-     */
     private fun isNotificationListenerEnabled(): Boolean {
         val componentName = ComponentName(this, TransactionNotificationService::class.java)
         val enabledListeners = Settings.Secure.getString(
@@ -146,9 +142,7 @@ class MainActivity : FragmentActivity() {
     }
 }
 
-/**
- * App Navigation
- */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FinlyApp(
     hasNotificationPermission: () -> Boolean,
@@ -156,68 +150,105 @@ fun FinlyApp(
     onTransactionTypeHandled: () -> Unit = {}
 ) {
     val navController = rememberNavController()
+    val currentRoute = navController.currentBackStackEntryFlow
+        .collectAsState(initial = navController.currentBackStackEntry)
+        .value?.destination?.route
     
-    // Xử lý deep link từ notification
     LaunchedEffect(pendingTransactionType) {
         if (pendingTransactionType != null) {
             val timestamp = System.currentTimeMillis()
-            navController.navigate("add_transaction/$timestamp?type=$pendingTransactionType") {
+            navController.navigate("category_selection/$timestamp/$pendingTransactionType") {
                 launchSingleTop = true
             }
             onTransactionTypeHandled()
         }
     }
     
-    // Kiểm tra quyền để quyết định màn hình bắt đầu
     val startDestination = remember {
         if (hasNotificationPermission()) "calendar" else "onboarding"
     }
     
-    NavHost(
-        navController = navController,
-        startDestination = startDestination
-    ) {
-        composable("onboarding") {
-            OnboardingScreen(
-                onComplete = {
-                    navController.navigate("calendar") {
-                        popUpTo("onboarding") { inclusive = true }
+    val bottomNavRoutes = setOf("calendar", "statistics", "debt_list", "settings")
+    val showBottomBar = currentRoute in bottomNavRoutes
+    
+    Scaffold(
+        topBar = {
+            if (showBottomBar) {
+                TopAppBar(
+                    title = { Text("Finly", fontWeight = FontWeight.Bold) },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        },
+        bottomBar = {
+            if (showBottomBar) {
+                FinlyBottomBar(
+                    currentRoute = currentRoute,
+                    onNavigate = { route ->
+                        navController.navigate(route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    onAddTransaction = {
+                        val timestamp = System.currentTimeMillis()
+                        navController.navigate("category_selection/$timestamp/EXPENSE")
                     }
-                }
-            )
+                )
+            }
         }
-        
-        composable("calendar") {
-            CalendarScreen(
-                onNavigateToAddTransaction = { timestamp ->
-                    navController.navigate("category_selection/$timestamp/EXPENSE")
-                },
-                onNavigateToEditTransaction = { transactionId ->
-                    val timestamp = System.currentTimeMillis()
-                    navController.navigate("category_selection/$timestamp/EXPENSE?transactionId=$transactionId")
-                },
-                onNavigateToSettings = {
-                    navController.navigate("settings")
-                },
-                onNavigateToStatistics = {
-                    navController.navigate("statistics")
-                }
-            )
-        }
-        
-        composable("dashboard") {
-            DashboardScreen(
-                onNavigateToSettings = {
-                    navController.navigate("settings")
-                },
-                onNavigateToAddTransaction = {
-                    val timestamp = System.currentTimeMillis()
-                    navController.navigate("add_transaction/$timestamp")
-                }
-            )
-        }
-        
-        // NEW FLOW: Category Selection -> Custom Category Creator -> Amount/Description
+    ) { paddingValues ->
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = Modifier.padding(paddingValues)
+        ) {
+            composable("onboarding") {
+                OnboardingScreen(
+                    onComplete = {
+                        navController.navigate("calendar") {
+                            popUpTo("onboarding") { inclusive = true }
+                        }
+                    }
+                )
+            }
+            
+            composable("calendar") {
+                CalendarScreen(
+                    onNavigateToAddTransaction = { timestamp ->
+                        navController.navigate("category_selection/$timestamp/EXPENSE")
+                    },
+                    onNavigateToEditTransaction = { transactionId ->
+                        val timestamp = System.currentTimeMillis()
+                        navController.navigate("category_selection/$timestamp/EXPENSE?transactionId=$transactionId")
+                    },
+                    onNavigateToSettings = {
+                        navController.navigate("settings")
+                    },
+                    onNavigateToStatistics = {
+                        navController.navigate("statistics")
+                    }
+                )
+            }
+            
+            composable("dashboard") {
+                DashboardScreen(
+                    onNavigateToSettings = {
+                        navController.navigate("settings")
+                    },
+                    onNavigateToAddTransaction = {
+                        val timestamp = System.currentTimeMillis()
+                        navController.navigate("add_transaction/$timestamp")
+                    }
+                )
+            }
+
         composable(
             route = "category_selection/{timestamp}/{type}?transactionId={transactionId}",
             arguments = listOf(
@@ -347,5 +378,6 @@ fun FinlyApp(
                 }
             )
         }
+    }
     }
 }

@@ -37,9 +37,7 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * Màn hình thống kê theo danh mục
- */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatisticsScreen(
@@ -50,89 +48,60 @@ fun StatisticsScreen(
     val monthFormat = SimpleDateFormat("MMMM yyyy", Locale("vi", "VN"))
     val formatter = NumberFormat.getInstance(Locale("vi", "VN"))
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Thống kê", fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Quay lại"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item {
+            MonthNavigation(
+                currentMonth = uiState.currentMonth,
+                monthFormat = monthFormat,
+                onPreviousMonth = { viewModel.previousMonth() },
+                onNextMonth = { viewModel.nextMonth() }
             )
         }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            // Month Navigation
-            item {
-                MonthNavigation(
-                    currentMonth = uiState.currentMonth,
-                    monthFormat = monthFormat,
-                    onPreviousMonth = { viewModel.previousMonth() },
-                    onNextMonth = { viewModel.nextMonth() }
-                )
-            }
 
-            // Type Selector
-            item {
-                TypeSelector(
-                    selectedType = uiState.selectedType,
-                    onTypeSelected = { viewModel.switchType(it) }
-                )
-            }
+        item {
+            TypeSelector(
+                selectedType = uiState.selectedType,
+                onTypeSelected = { viewModel.switchType(it) }
+            )
+        }
 
-            // Pie Chart
-            item {
-                if (uiState.categoryStats.isNotEmpty()) {
-                    PieChartCard(
-                        stats = uiState.categoryStats,
-                        totalAmount = uiState.totalAmount,
-                        isExpense = uiState.selectedType == TransactionType.EXPENSE,
-                        formatter = formatter
-                    )
-                } else if (!uiState.isLoading) {
-                    EmptyStatsCard(isExpense = uiState.selectedType == TransactionType.EXPENSE)
-                }
-            }
-
-            // Category List
+        item {
             if (uiState.categoryStats.isNotEmpty()) {
-                item {
-                    Text(
-                        text = "Chi tiết theo danh mục",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                PieChartCard(
+                    stats = uiState.categoryStats,
+                    totalAmount = uiState.totalAmount,
+                    isExpense = uiState.selectedType == TransactionType.EXPENSE,
+                    formatter = formatter
+                )
+            } else if (!uiState.isLoading) {
+                EmptyStatsCard(isExpense = uiState.selectedType == TransactionType.EXPENSE)
+            }
+        }
 
-                items(uiState.categoryStats) { stat ->
-                    CategoryStatItem(
-                        stat = stat,
-                        formatter = formatter
-                    )
-                }
+        if (uiState.categoryStats.isNotEmpty()) {
+            item {
+                Text(
+                    text = "Chi tiết theo danh mục",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            items(uiState.categoryStats) { stat ->
+                CategoryStatItem(
+                    stat = stat,
+                    formatter = formatter
+                )
             }
         }
     }
 }
 
-/**
- * Navigation tháng
- */
+
 @Composable
 private fun MonthNavigation(
     currentMonth: Calendar,
@@ -170,9 +139,7 @@ private fun MonthNavigation(
     }
 }
 
-/**
- * Selector loại giao dịch
- */
+
 @Composable
 private fun TypeSelector(
     selectedType: TransactionType,
@@ -222,9 +189,7 @@ private fun TypeSelector(
     }
 }
 
-/**
- * Card chứa Pie Chart
- */
+
 @Composable
 private fun PieChartCard(
     stats: List<CategoryStat>,
@@ -244,7 +209,7 @@ private fun PieChartCard(
             modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Pie Chart
+
             Box(
                 modifier = Modifier.size(200.dp),
                 contentAlignment = Alignment.Center
@@ -254,7 +219,7 @@ private fun PieChartCard(
                     modifier = Modifier.fillMaxSize()
                 )
                 
-                // Center text
+
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = "Tổng",
@@ -272,7 +237,7 @@ private fun PieChartCard(
             
             Spacer(modifier = Modifier.height(16.dp))
             
-            // Legend
+
             stats.take(5).chunked(2).forEach { row ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -284,7 +249,7 @@ private fun PieChartCard(
                             percentage = stat.percentage
                         )
                     }
-                    // Fill empty space if odd number
+
                     if (row.size == 1) {
                         Spacer(modifier = Modifier.weight(1f))
                     }
@@ -294,9 +259,7 @@ private fun PieChartCard(
     }
 }
 
-/**
- * Pie Chart composable
- */
+
 @Composable
 private fun PieChart(
     stats: List<CategoryStat>,
@@ -329,9 +292,7 @@ private fun PieChart(
     }
 }
 
-/**
- * Legend item
- */
+
 @Composable
 private fun LegendItem(
     category: TransactionCategory,
@@ -356,9 +317,7 @@ private fun LegendItem(
     }
 }
 
-/**
- * Item thống kê theo danh mục
- */
+
 @Composable
 private fun CategoryStatItem(
     stat: CategoryStat,
@@ -378,7 +337,7 @@ private fun CategoryStatItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icon
+
             Box(
                 modifier = Modifier
                     .size(44.dp)
@@ -396,7 +355,7 @@ private fun CategoryStatItem(
             
             Spacer(modifier = Modifier.width(12.dp))
             
-            // Info
+
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stat.category.displayName,
@@ -410,7 +369,7 @@ private fun CategoryStatItem(
                 )
             }
             
-            // Amount & Percentage
+
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = "${formatter.format(stat.amount)}đ",
@@ -426,7 +385,7 @@ private fun CategoryStatItem(
             }
         }
         
-        // Progress bar
+
         LinearProgressIndicator(
             progress = { stat.percentage / 100f },
             modifier = Modifier
@@ -438,9 +397,7 @@ private fun CategoryStatItem(
     }
 }
 
-/**
- * Card khi không có dữ liệu
- */
+
 @Composable
 private fun EmptyStatsCard(isExpense: Boolean) {
     Card(
