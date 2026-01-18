@@ -38,6 +38,7 @@ class SecurityPreferences @Inject constructor(
         private const val KEY_PIN_HASH = "pin_hash"
         private const val KEY_BIOMETRIC_ENABLED = "biometric_enabled"
         private const val KEY_APP_LOCK_ENABLED = "app_lock_enabled"
+        private const val KEY_HIDE_AMOUNT = "hide_amount"
     }
 
     /**
@@ -94,5 +95,16 @@ class SecurityPreferences @Inject constructor(
      */
     fun isBiometricEnabled(): Boolean {
         return sharedPreferences.getBoolean(KEY_BIOMETRIC_ENABLED, false)
+    }
+    
+    /**
+     * Ẩn/hiện số tiền
+     */
+    fun isAmountHidden(): Boolean {
+        return sharedPreferences.getBoolean(KEY_HIDE_AMOUNT, false)
+    }
+    
+    fun setAmountHidden(hidden: Boolean) {
+        sharedPreferences.edit().putBoolean(KEY_HIDE_AMOUNT, hidden).apply()
     }
 }

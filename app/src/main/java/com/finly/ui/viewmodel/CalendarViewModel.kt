@@ -2,6 +2,7 @@ package com.finly.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.finly.data.local.SecurityPreferences
 import com.finly.data.local.entity.Transaction
 import com.finly.data.local.entity.TransactionType
 import com.finly.data.repository.TransactionRepository
@@ -31,7 +32,8 @@ data class CalendarUiState(
     val selectedDayTransactions: List<Transaction> = emptyList(),
     val monthlyIncome: Long = 0,
     val monthlyExpense: Long = 0,
-    val isLoading: Boolean = true
+    val isLoading: Boolean = true,
+    val isAmountHidden: Boolean = false
 )
 
 /**
@@ -39,7 +41,8 @@ data class CalendarUiState(
  */
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val securityPreferences: SecurityPreferences
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CalendarUiState())
@@ -47,6 +50,19 @@ class CalendarViewModel @Inject constructor(
 
     init {
         loadCurrentMonth()
+        loadHideAmountPreference()
+    }
+    
+    private fun loadHideAmountPreference() {
+        _uiState.update {
+            it.copy(isAmountHidden = securityPreferences.isAmountHidden())
+        }
+    }
+    
+    fun toggleHideAmount() {
+        val newValue = !_uiState.value.isAmountHidden
+        securityPreferences.setAmountHidden(newValue)
+        _uiState.update { it.copy(isAmountHidden = newValue) }
     }
 
     /**

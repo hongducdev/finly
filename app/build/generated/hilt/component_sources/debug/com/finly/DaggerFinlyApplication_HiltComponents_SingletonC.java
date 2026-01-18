@@ -528,7 +528,7 @@ public final class DaggerFinlyApplication_HiltComponents_SingletonC {
           return (T) new BudgetViewModel(singletonCImpl.budgetRepositoryProvider.get(), singletonCImpl.transactionRepositoryProvider.get());
 
           case 3: // com.finly.ui.viewmodel.CalendarViewModel 
-          return (T) new CalendarViewModel(singletonCImpl.transactionRepositoryProvider.get());
+          return (T) new CalendarViewModel(singletonCImpl.transactionRepositoryProvider.get(), singletonCImpl.securityPreferencesProvider.get());
 
           case 4: // com.finly.ui.viewmodel.CategorySelectionViewModel 
           return (T) new CategorySelectionViewModel(singletonCImpl.customCategoryRepositoryProvider.get());

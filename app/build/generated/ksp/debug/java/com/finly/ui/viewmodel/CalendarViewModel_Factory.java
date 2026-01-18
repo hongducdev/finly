@@ -1,5 +1,6 @@
 package com.finly.ui.viewmodel;
 
+import com.finly.data.local.SecurityPreferences;
 import com.finly.data.repository.TransactionRepository;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
@@ -24,21 +25,27 @@ import javax.inject.Provider;
 public final class CalendarViewModel_Factory implements Factory<CalendarViewModel> {
   private final Provider<TransactionRepository> transactionRepositoryProvider;
 
-  public CalendarViewModel_Factory(Provider<TransactionRepository> transactionRepositoryProvider) {
+  private final Provider<SecurityPreferences> securityPreferencesProvider;
+
+  public CalendarViewModel_Factory(Provider<TransactionRepository> transactionRepositoryProvider,
+      Provider<SecurityPreferences> securityPreferencesProvider) {
     this.transactionRepositoryProvider = transactionRepositoryProvider;
+    this.securityPreferencesProvider = securityPreferencesProvider;
   }
 
   @Override
   public CalendarViewModel get() {
-    return newInstance(transactionRepositoryProvider.get());
+    return newInstance(transactionRepositoryProvider.get(), securityPreferencesProvider.get());
   }
 
   public static CalendarViewModel_Factory create(
-      Provider<TransactionRepository> transactionRepositoryProvider) {
-    return new CalendarViewModel_Factory(transactionRepositoryProvider);
+      Provider<TransactionRepository> transactionRepositoryProvider,
+      Provider<SecurityPreferences> securityPreferencesProvider) {
+    return new CalendarViewModel_Factory(transactionRepositoryProvider, securityPreferencesProvider);
   }
 
-  public static CalendarViewModel newInstance(TransactionRepository transactionRepository) {
-    return new CalendarViewModel(transactionRepository);
+  public static CalendarViewModel newInstance(TransactionRepository transactionRepository,
+      SecurityPreferences securityPreferences) {
+    return new CalendarViewModel(transactionRepository, securityPreferences);
   }
 }

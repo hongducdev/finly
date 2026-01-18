@@ -32,7 +32,8 @@ data class SettingsUiState(
     val importedCount: Int = 0,
     val errorMessage: String? = null,
     val isAppLockEnabled: Boolean = false,
-    val isBiometricEnabled: Boolean = false
+    val isBiometricEnabled: Boolean = false,
+    val isAmountHidden: Boolean = false
 )
 
 /**
@@ -61,7 +62,8 @@ class SettingsViewModel @Inject constructor(
         _uiState.update { 
             it.copy(
                 isAppLockEnabled = securityPreferences.isAppLockEnabled(),
-                isBiometricEnabled = securityPreferences.isBiometricEnabled()
+                isBiometricEnabled = securityPreferences.isBiometricEnabled(),
+                isAmountHidden = securityPreferences.isAmountHidden()
             ) 
         }
     }

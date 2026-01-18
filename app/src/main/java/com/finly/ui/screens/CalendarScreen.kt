@@ -94,7 +94,9 @@ fun CalendarScreen(
             item {
                 MonthSummaryCard(
                     income = uiState.monthlyIncome,
-                    expense = uiState.monthlyExpense
+                    expense = uiState.monthlyExpense,
+                    isAmountHidden = uiState.isAmountHidden,
+                    onToggleHideAmount = { viewModel.toggleHideAmount() }
                 )
             }
             
@@ -143,7 +145,9 @@ fun CalendarScreen(
 @Composable
 private fun MonthSummaryCard(
     income: Long,
-    expense: Long
+    expense: Long,
+    isAmountHidden: Boolean,
+    onToggleHideAmount: () -> Unit
 ) {
     val balance = income - expense
     val formatter = NumberFormat.getInstance(Locale("vi", "VN"))
@@ -158,11 +162,28 @@ private fun MonthSummaryCard(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(
-                text = "Tổng quan tháng này",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Tổng quan tháng này",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+                
+                IconButton(
+                    onClick = onToggleHideAmount,
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isAmountHidden) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                        contentDescription = if (isAmountHidden) "Hiện số tiền" else "Ẩn số tiền",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+            }
             
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -176,7 +197,7 @@ private fun MonthSummaryCard(
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                     )
                     Text(
-                        text = "+${formatter.format(income)}đ",
+                        text = com.finly.util.CurrencyFormatter.format(income, isAmountHidden),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = IncomeGreen
@@ -191,7 +212,7 @@ private fun MonthSummaryCard(
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                     )
                     Text(
-                        text = "-${formatter.format(expense)}đ",
+                        text = com.finly.util.CurrencyFormatter.format(expense, isAmountHidden),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = ExpenseRed
@@ -213,7 +234,7 @@ private fun MonthSummaryCard(
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Text(
-                    text = "${if (balance >= 0) "+" else ""}${formatter.format(balance)}đ",
+                    text = com.finly.util.CurrencyFormatter.formatWithSign(balance, isAmountHidden),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = if (balance >= 0) IncomeGreen else ExpenseRed
